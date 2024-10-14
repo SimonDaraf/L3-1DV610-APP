@@ -1,0 +1,19 @@
+{
+  "name": "l3-1dv610-app",
+  "version": "1.0.0",
+  "description": "The L3 laboration for 1DV610",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "vitest --environment jsdom ./tests/"
+  },
+  "repository": {
+    "url": "git+https://github.com/SimonDaraf/L3-1DV610-APP.git",
+    "type": "git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vite": "^5.4.9",
+    "vitest": "^2.1.3"
+  }
+}
