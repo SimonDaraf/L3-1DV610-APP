@@ -44,9 +44,9 @@ export class Hand {
     }
 
     if (value > this.#MAX_ALLOWED_VALUE) {
-      for (let i = 0; i < this.#acesInHand; i++) {
-        // No nicer way to do this, an ace is either 1 or 11, so try to remove 10.
-        value - 10
+      for (let i = 0; i < this.#acesInHand(); i++) {
+        // No nicer way to do this, an ace is either 1 or 11, so remove 10.
+        value -= 10
 
         // Check if we need to continue
         if (value < this.#MAX_ALLOWED_VALUE) {
@@ -66,7 +66,7 @@ export class Hand {
   #acesInHand () {
     let numberOfAces = 0
     for (const card of this.#cardsInHand) {
-      if (card.suit === CardRank.ACE) {
+      if (card.rank === CardRank.ACE) {
         numberOfAces++
       }
     }
