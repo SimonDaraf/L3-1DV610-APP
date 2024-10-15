@@ -15,7 +15,21 @@ export class Card {
    * @param {CardRank} rank - The card rank. 
    */
   constructor (suit, rank) {
+    this.#setSuit(suit)
+    this.#setRank(rank)
+  }
+
+  #setSuit (suit) {
+    if (!(suit instanceof CardSuit)) {
+      throw new Error('Invalid card suit.')
+    }
     this.#suit = suit
+  }
+
+  #setRank(rank) {
+    if (!(rank instanceof CardRank)) {
+      throw new Error('Invalid card rank.')
+    }
     this.#rank = rank
   }
 
