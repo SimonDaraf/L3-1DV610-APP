@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest'
-import { Deck } from '../src/game/deck.js'
-import { Card } from '../src/game/card.js'
-import { CardSuit } from '../src/game/cardSuits.js'
-import { CardRank } from '../src/game/cardRanks.js'
+import { Deck } from '../src/model/game/deck.js'
+import { Card } from '../src/model/game/card.js'
+import { CardSuit } from '../src/model/game/cardSuits.js'
+import { CardRank } from '../src/model/game/cardRanks.js'
 
 test('Assert deck creation', () => {
   // Arrange

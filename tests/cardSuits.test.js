@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { CardSuit } from '../src/game/cardSuits.js'
+import { CardSuit } from '../src/model/game/cardSuits.js'
 
 test('Assert strict usage of cardRanks', () => {
   // Arrange
