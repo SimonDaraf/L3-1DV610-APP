@@ -14,10 +14,27 @@ export class BlackJack {
    *
    * @param {Hand} dealerHand - the dealer hand.
    * @param {Hand} playerHand - the player hand.
+   * @param {Deck} deck - The deck to use.
    */
-  constructor (playerHand, dealerHand) {
+  constructor (playerHand, dealerHand, deck) {
     this.#dealerHand = dealerHand
     this.#playerHand = playerHand
-    this.#deck = new Deck()
+    this.#deck = deck
+  }
+
+  /**
+   * Shuffle deck and deal cards to player and dealer.
+   */
+  startDealingProcess () {
+    this.#dealCardToHand(this.#playerHand)
+  }
+
+  /**
+   * Deals a card to a specific hand. Works on mutation.
+   *
+   * @param {Hand} hand - The hand to modify.
+   */
+  #dealCardToHand(hand) {
+    hand.addCardToHand(this.#deck.popTopCard())
   }
 }
