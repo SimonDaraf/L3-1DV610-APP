@@ -24,7 +24,7 @@ export class Hand {
   /**
    * Add a playing card to the hand.
    *
-   * @param {Card} card 
+   * @param {Card} card
    */
   addCardToHand (card) {
     this.#cardsInHand.push(card)
@@ -57,7 +57,7 @@ export class Hand {
 
     return value
   }
-  
+
   /**
    * Returns the amount of aces in hand.
    *

@@ -7,7 +7,7 @@ import { CardRank } from '../src/model/game/cardRanks.js'
 test('Assert deck creation', () => {
   // Arrange
   const cleanDeck = []
-  const deck = new Deck
+  const deck = new Deck()
 
   // Act
   for (const suit of Object.values(CardSuit)) {

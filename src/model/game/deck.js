@@ -12,7 +12,7 @@ export class Deck {
    * @type {Card[]}
    */
   #playingCards
-  
+
   /**
    * Constructs a classic french suited deck with 52 playing cards.
    */

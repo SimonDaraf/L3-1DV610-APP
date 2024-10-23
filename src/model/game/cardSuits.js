@@ -7,14 +7,9 @@ export class CardSuit {
   static CLUBS = new CardSuit('clubs')
   static SPADES = new CardSuit('spades')
 
-  /**
-   * The card suit value.
-   *
-   * @type {string}
-   */
   #value
 
-  constructor(value) {
+  constructor (value) {
     this.#value = value
   }
 
@@ -24,6 +19,6 @@ export class CardSuit {
    * @type {string}
    */
   get value () {
-    return this.#value;
+    return this.#value
   }
 }

@@ -12,7 +12,7 @@ export class Card {
    * Constructs an instance of a basic playing card.
    *
    * @param {CardSuit} suit - The card suit.
-   * @param {CardRank} rank - The card rank. 
+   * @param {CardRank} rank - The card rank.
    */
   constructor (suit, rank) {
     this.#setSuit(suit)
@@ -26,7 +26,7 @@ export class Card {
     this.#suit = suit
   }
 
-  #setRank(rank) {
+  #setRank (rank) {
     if (!(rank instanceof CardRank)) {
       throw new Error('Invalid card rank.')
     }
@@ -38,7 +38,7 @@ export class Card {
    *
    * @type {CardSuit}
    */
-  get suit() {
+  get suit () {
     return this.#suit
   }
 
@@ -47,7 +47,7 @@ export class Card {
    *
    * @type {CardRank}
    */
-  get rank() {
+  get rank () {
     return this.#rank
   }
 }

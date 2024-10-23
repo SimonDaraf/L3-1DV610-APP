@@ -16,11 +16,6 @@ export class CardRank {
   static KING = new CardRank(10)
   static ACE = new CardRank(11)
 
-  /**
-   * The card rank value.
-   *
-   * @type {number}
-   */
   #value
 
   constructor (value) {

@@ -5,28 +5,36 @@ import { Deck } from './deck.js'
  * Responsible for the black jack game logic.
  */
 export class BlackJack {
-  #dealerHand
-  #playerHand
   #deck
+  #STARTING_HAND_SIZE = 2
 
   /**
    * Constructs an instance of a black jack game.
    *
-   * @param {Hand} dealerHand - the dealer hand.
-   * @param {Hand} playerHand - the player hand.
    * @param {Deck} deck - The deck to use.
    */
-  constructor (playerHand, dealerHand, deck) {
-    this.#dealerHand = dealerHand
-    this.#playerHand = playerHand
+  constructor (deck) {
     this.#deck = deck
   }
 
   /**
-   * Shuffle deck and deal cards to player and dealer.
+   * Shuffles the deck.
    */
-  startDealingProcess () {
-    this.#dealCardToHand(this.#playerHand)
+  shuffle () {
+    this.#deck.shuffle()
+  }
+
+  /**
+   * Deal cards to player and dealer.
+   *
+   * @param {Hand} playerHand - The player hand.
+   * @param {Hand} dealerHand - The dealer hand.
+   */
+  startDealingProcess (playerHand, dealerHand) {
+    for (let i = 0; i < this.#STARTING_HAND_SIZE; i++) {
+      this.#dealCardToHand(playerHand)
+      this.#dealCardToHand(dealerHand)
+    }
   }
 
   /**
@@ -34,7 +42,7 @@ export class BlackJack {
    *
    * @param {Hand} hand - The hand to modify.
    */
-  #dealCardToHand(hand) {
+  #dealCardToHand (hand) {
     hand.addCardToHand(this.#deck.popTopCard())
   }
 }

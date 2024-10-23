@@ -18,16 +18,16 @@ test('Assert correct hand value', () => {
 
   // Close your eyes, JavaScript can't hurt you :)
   const cardsHandOne = [new Card(CardSuit.HEARTS, CardRank.KING)]
-  const cardsHandTwo = [new Card(CardSuit.HEARTS, CardRank.EIGHT), 
-                        new Card(CardSuit.HEARTS, CardRank.FOUR), 
-                        new Card(CardSuit.HEARTS, CardRank.QUEEN)]
-  const cardsHandThree = [new Card(CardSuit.HEARTS, CardRank.JACK), 
-                        new Card(CardSuit.HEARTS, CardRank.EIGHT)]
-  const cardsHandFour = [new Card(CardSuit.HEARTS, CardRank.KING), 
-                        new Card(CardSuit.HEARTS, CardRank.TWO), 
-                        new Card(CardSuit.HEARTS, CardRank.ACE), 
-                        new Card(CardSuit.HEARTS, CardRank.ACE)]
-  
+  const cardsHandTwo = [new Card(CardSuit.HEARTS, CardRank.EIGHT),
+    new Card(CardSuit.HEARTS, CardRank.FOUR),
+    new Card(CardSuit.HEARTS, CardRank.QUEEN)]
+  const cardsHandThree = [new Card(CardSuit.HEARTS, CardRank.JACK),
+    new Card(CardSuit.HEARTS, CardRank.EIGHT)]
+  const cardsHandFour = [new Card(CardSuit.HEARTS, CardRank.KING),
+    new Card(CardSuit.HEARTS, CardRank.TWO),
+    new Card(CardSuit.HEARTS, CardRank.ACE),
+    new Card(CardSuit.HEARTS, CardRank.ACE)]
+
   // Act
   for (const card of cardsHandOne) {
     handOne.addCardToHand(card)
