@@ -11,7 +11,7 @@ export class CardRank {
   static EIGHT = new CardRank(8)
   static NINE = new CardRank(9)
   static TEN = new CardRank(10)
-  static KNIGHT = new CardRank(10)
+  static JACK = new CardRank(10)
   static QUEEN = new CardRank(10)
   static KING = new CardRank(10)
   static ACE = new CardRank(11)

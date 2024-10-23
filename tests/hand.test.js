@@ -21,7 +21,7 @@ test('Assert correct hand value', () => {
   const cardsHandTwo = [new Card(CardSuit.HEARTS, CardRank.EIGHT), 
                         new Card(CardSuit.HEARTS, CardRank.FOUR), 
                         new Card(CardSuit.HEARTS, CardRank.QUEEN)]
-  const cardsHandThree = [new Card(CardSuit.HEARTS, CardRank.KNIGHT), 
+  const cardsHandThree = [new Card(CardSuit.HEARTS, CardRank.JACK), 
                         new Card(CardSuit.HEARTS, CardRank.EIGHT)]
   const cardsHandFour = [new Card(CardSuit.HEARTS, CardRank.KING), 
                         new Card(CardSuit.HEARTS, CardRank.TWO), 
