@@ -59,6 +59,15 @@ export class Hand {
   }
 
   /**
+   * The current size of the hand.
+   *
+   * @returns {Number} - The current hand size.
+   */
+  getCurrentHandSize () {
+    return this.#cardsInHand.length
+  }
+
+  /**
    * Returns the amount of aces in hand.
    *
    * @returns {Number} - The amount of aces in hand.
