@@ -25,6 +25,14 @@
   grid-area: player;
 }
 
+.card-view {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-self: center;
+  flex-wrap: nowrap;
+}
+
 #current-fund {
   color: #fff;
   position: absolute;

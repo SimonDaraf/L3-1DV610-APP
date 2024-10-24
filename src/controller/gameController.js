@@ -66,6 +66,10 @@ export class GameController extends EventTarget {
     for (const card of this.#player.hand.getCopyOfCards()) {
       this.#renderCardForPlayer(card)
     }
+
+    for (const card of this.#dealerHand.getCopyOfCards()) {
+      this.#renderCardForDealer(card)
+    }
   }
 
   #renderCardForPlayer (card) {
@@ -79,7 +83,13 @@ export class GameController extends EventTarget {
   }
 
   #renderCardForDealer (card) {
-
+    const cardComponent = document.createElement(RegisteredComponent.CARD_COMPONENT.componentName)
+    const img = document.createElement('img')
+    img.setAttribute('slot', 'card-face')
+    console.log(this.#cardFolderPath)
+    img.src = `${this.#cardFolderPath}/${card.fileName}`
+    cardComponent.appendChild(img)
+    this.#dealerView.appendChild(cardComponent)
   }
 
   #updatePlayerFundsView (funds) {
