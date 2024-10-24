@@ -83,25 +83,40 @@ export class GameController extends EventTarget {
       this.#renderCardForDealer(card)
     }
 
+    // Evaluate if player has blackjack.
+
     this.#togglePlayerChoiceView()
   }
 
   #renderCardForPlayer (card) {
-    const cardComponent = document.createElement(RegisteredComponent.CARD_COMPONENT.componentName)
-    const img = document.createElement('img')
-    img.setAttribute('slot', 'card-face')
-    img.src = `${this.#cardFolderPath}/${card.fileName}`
-    cardComponent.appendChild(img)
-    this.#playerView.appendChild(cardComponent)
+    const cardElement = this.#createCardElement(card)
+    this.#playerView.appendChild(cardElement)
   }
 
   #renderCardForDealer (card) {
+    const cardElement = this.#createCardElement(card)
+    this.#dealerView.appendChild(cardElement)
+  }
+
+  #dealCardToPlayer () {
+    const card = this.#blackJackInstance.dealCard()
+    this.#renderCardForPlayer(card)
+    this.#player.addCardToHand(card)
+  }
+
+  #createCardElement (card) {
     const cardComponent = document.createElement(RegisteredComponent.CARD_COMPONENT.componentName)
     const img = document.createElement('img')
     img.setAttribute('slot', 'card-face')
     img.src = `${this.#cardFolderPath}/${card.fileName}`
     cardComponent.appendChild(img)
-    this.#dealerView.appendChild(cardComponent)
+    return cardComponent
+  }
+
+  #evaluatePlayerStatus () {
+    if (this.#blackJackInstance.isHandBusted(this.#player.hand)) {
+      console.log('busted')
+    }
   }
 
   #updatePlayerFundsView (funds) {
@@ -125,7 +140,13 @@ export class GameController extends EventTarget {
   }
 
   #onPlayer_Bet (eventObj) {
-    this.#currentBet = eventObj.detail
+    const bet = eventObj.detail
+
+    if (bet > this.#player.funds) {
+      return
+    }
+
+    this.#currentBet = bet
     this.#toggleBetView()
     this.#player.deductFunds(this.#currentBet)
     this.#updatePlayerFundsView(this.#player.funds)
@@ -133,7 +154,8 @@ export class GameController extends EventTarget {
   }
 
   #onPlayer_Hit () {
-    console.log(this)
+    this.#dealCardToPlayer()
+    this.#evaluatePlayerStatus()
   }
 
   #onPlayer_Stand () {
