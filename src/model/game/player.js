@@ -25,6 +25,15 @@ export class Player {
     return this.#funds
   }
 
+  /**
+   * Get the player hand.
+   *
+   * @type {Hand}
+   */
+  get hand () {
+    return this.#hand
+  }
+
   addFunds (fundsToAdd) {
     this.#funds += fundsToAdd
   }
@@ -35,9 +44,5 @@ export class Player {
 
   addCardToHand (card) {
     this.#hand.addCardToHand(card)
-  }
-
-  getHandShallowCopy () {
-    return [...this.#hand]
   }
 }

@@ -21,6 +21,15 @@ export class BlackJack {
   }
 
   /**
+   * The starting hand size.
+   *
+   * @type {Number}
+   */
+  get STARTING_HAND_SIZE () {
+    return this.#STARTING_HAND_SIZE
+  }
+
+  /**
    * Shuffles the deck.
    */
   shuffle () {
@@ -44,18 +53,18 @@ export class BlackJack {
    */
   startDealingProcess (playerHand, dealerHand) {
     for (let i = 0; i < this.#STARTING_HAND_SIZE; i++) {
-      this.dealCardToHand(playerHand)
-      this.dealCardToHand(dealerHand)
+      playerHand.addCardToHand(this.dealCard())
+      dealerHand.addCardToHand(this.dealCard())
     }
   }
 
   /**
-   * Deals a card to a specific hand. Works on mutation.
+   * Deals the top card of the deck.
    *
-   * @param {Hand} hand - The hand to modify.
+   * @returns {Card} - The top card.
    */
-  dealCardToHand (hand) {
-    hand.addCardToHand(this.#deck.popTopCard())
+  dealCard () {
+    return this.#deck.popTopCard()
   }
 
   /**

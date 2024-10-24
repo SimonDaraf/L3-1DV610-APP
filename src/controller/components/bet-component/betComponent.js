@@ -33,7 +33,13 @@ export class BetComponent extends WebComponent {
     if (!(betButton.className === 'bet-button')) {
       return
     }
+    
     const betValue = betButton.textContent.replace('$', '')
+
+    if (Number.isNaN(betValue)) {
+      throw new Error('Invalid bet value, if you get this the source code is not working.')
+    }
+
     this.dispatchEvent(new CustomEvent(ComponentEvent.PLAYER_BET.event, {
       bubbles: true,
       detail: betValue

@@ -36,7 +36,10 @@ export class Deck {
     for (let i = this.#playingCards.length - 1; i > 0; i--) {
       // Random index from [0 -> playing cards length - 1]
       const randomIndex = Math.floor(Math.random() * this.#playingCards.length)
-      this.#playingCards[randomIndex], this.#playingCards[i] = this.#playingCards[i], this.#playingCards[randomIndex]
+      const cardAtCurrentPosition = this.#playingCards[i]
+      const cardAtRandomPosition = this.#playingCards[randomIndex]
+      this.#playingCards[i] = cardAtRandomPosition
+      this.#playingCards[randomIndex] = cardAtCurrentPosition
     }
   }
 

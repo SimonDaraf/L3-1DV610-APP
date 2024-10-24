@@ -7,6 +7,7 @@ import { CardRank } from './cardRanks.js'
 export class Card {
   #suit
   #rank
+  #fileName
 
   /**
    * Constructs an instance of a basic playing card.
@@ -17,6 +18,7 @@ export class Card {
   constructor (suit, rank) {
     this.#setSuit(suit)
     this.#setRank(rank)
+    this.#fileName = `${rank.name}_of_${suit.value}.png`
   }
 
   #setSuit (suit) {
@@ -49,5 +51,14 @@ export class Card {
    */
   get rank () {
     return this.#rank
+  }
+
+  /**
+   * Returns a usable file name assembled from the card.
+   *
+   * @type {String}
+   */
+  get fileName () {
+    return this.#fileName
   }
 }

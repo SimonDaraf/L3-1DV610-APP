@@ -22,6 +22,15 @@ export class Hand {
   }
 
   /**
+   * Returns a shallow copy of cards.
+   *
+   * @returns {Card[]} - The shallow card array copy.
+   */
+  getCopyOfCards () {
+    return [...this.#cardsInHand]
+  }
+
+  /**
    * Add a playing card to the hand.
    *
    * @param {Card} card
