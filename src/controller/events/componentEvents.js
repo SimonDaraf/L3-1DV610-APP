@@ -3,8 +3,11 @@
  */
 export class ComponentEvent {
   static START = new ComponentEvent('mainmenu::start')
-  static HIT = new ComponentEvent('player::hit')
-  static STAND = new ComponentEvent('player::stand')
+  static PLAYER_HIT = new ComponentEvent('player::hit')
+  static PLAYER_STAND = new ComponentEvent('player::stand')
+  static DEALER_HIT = new ComponentEvent('dealer::hit')
+  static DEALER_STAND = new ComponentEvent('dealer::stand')
+  static GAME_OVER = new ComponentEvent('game::gameover')
 
   #event
 

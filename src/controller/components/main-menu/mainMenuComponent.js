@@ -9,6 +9,7 @@ const MODULE_PATH = import.meta.url
  * Represents a MainMenuComponent, responsible for the underlying control logic of the main menu.
  */
 export class MainMenuComponent extends WebComponent {
+  test = 2
   /**
    * Constructs an instance of a MainMenuComponent.
    *
