@@ -1,0 +1,15 @@
+#bet-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#bet-header {
+  text-align: center;
+  color: #fff;
+}
+
+#bet-button-wrapper {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+}

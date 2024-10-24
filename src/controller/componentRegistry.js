@@ -1,3 +1,4 @@
+import { BetComponent } from './components/bet-component/betComponent.js'
 import { GameComponent } from './components/game-component/gameComponent.js'
 import { MainMenuComponent } from './components/main-menu/mainMenuComponent.js'
 import { RegisteredComponent } from './registeredComponents.js'
@@ -13,6 +14,7 @@ export class ComponentRegistry extends EventTarget {
     const components = []
     components.push(new MainMenuComponent(RegisteredComponent.MAIN_MENU_COMPONENT))
     components.push(new GameComponent(RegisteredComponent.GAME_COMPONENT))
+    components.push(new BetComponent(RegisteredComponent.BET_COMPONENT))
     this.#defineComponents(components)
   }
 

@@ -4,6 +4,7 @@
 export class RegisteredComponent {
   static MAIN_MENU_COMPONENT = new RegisteredComponent('main-menu-component')
   static GAME_COMPONENT = new RegisteredComponent('game-component')
+  static BET_COMPONENT = new RegisteredComponent('bet-component')
 
   #componentName
 
