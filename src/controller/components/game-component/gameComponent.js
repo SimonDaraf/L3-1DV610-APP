@@ -19,18 +19,18 @@ export class GameComponent extends WebComponent {
   }
 
   #addEvents () {
-    this.registerEvent(new EventContainer(ComponentEvent.HIT.event, '', this.#onPlayer_Hit))
-    this.registerEvent(new EventContainer(ComponentEvent.STAND.event, '', this.#onPlayer_Stand))
+    this.registerEvent(new EventContainer(ComponentEvent.PLAYER_HIT.event, '', this.#onPlayer_Hit))
+    this.registerEvent(new EventContainer(ComponentEvent.PLAYER_STAND.event, '', this.#onPlayer_Stand))
   }
 
   #onPlayer_Hit () {
-    this.dispatchEvent(new CustomEvent(ComponentEvent.HIT.event, {
+    this.dispatchEvent(new CustomEvent(ComponentEvent.PLAYER_HIT.event, {
       bubbles: true
     }))
   }
 
   #onPlayer_Stand () {
-    this.dispatchEvent(new CustomEvent(ComponentEvent.STAND.event, {
+    this.dispatchEvent(new CustomEvent(ComponentEvent.PLAYER_STAND.event, {
       bubbles: true
     }))
   }

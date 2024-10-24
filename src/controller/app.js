@@ -23,32 +23,24 @@ export class App {
    * The starting point of the application.
    */
   async main () {
-    this.#addEventListeners(ComponentEvent.START.event, this.#onStart)
-
     const componentRegistry = new ComponentRegistry()
     await componentRegistry.registerComponents()
 
-    this.#appendElementToContainer(document.createElement(RegisteredComponent.MAIN_MENU_COMPONENT.componentName))
-  }
-
-  #addEventListeners (eventName, eventFunction) {
-    document.addEventListener(eventName, eventFunction)
+    const mainMenuElement = document.createElement(RegisteredComponent.MAIN_MENU_COMPONENT.componentName)
+    this.#appendElementToContainer(mainMenuElement)
+    this.#addEventListeners(ComponentEvent.START.event, this.#onStart)
   }
 
   #appendElementToContainer (element) {
     this.#container.appendChild(element)
   }
 
-  #onStart () {
-    this.#tryRemoveComponent(RegisteredComponent.MAIN_MENU_COMPONENT.componentName)
-    const gameComponent = document.createElement(RegisteredComponent.GAME_COMPONENT.componentName)
-    this.#appendElementToContainer(gameComponent)
-    this.#gameController = new GameController(gameComponent)
-    this.#gameController.addEventListener(ComponentEvent.GAME_OVER.event, this.#onGameOver)
+  #addEventListeners (eventName, eventFunction) {
+    document.addEventListener(eventName, eventFunction.bind(this), { signal: this.#abortController.signal })
   }
 
-  #onGameOver () {
-    console.log('lost')
+  #abortCurrentListeners () {
+    this.#abortController.abort()
   }
 
   #tryRemoveComponent (componentName) {
@@ -58,5 +50,18 @@ export class App {
     } catch (e) {
       return
     }
+  }
+
+  #onStart () {
+    this.#abortCurrentListeners()
+    this.#tryRemoveComponent(RegisteredComponent.MAIN_MENU_COMPONENT.componentName)
+    const gameComponent = document.createElement(RegisteredComponent.GAME_COMPONENT.componentName)
+    this.#appendElementToContainer(gameComponent)
+    this.#gameController = new GameController(gameComponent)
+    this.#gameController.addEventListener(ComponentEvent.GAME_OVER.event, this.#onGameOver)
+  }
+
+  #onGameOver () {
+    console.log('lost')
   }
 }
