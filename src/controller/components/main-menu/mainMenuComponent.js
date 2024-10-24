@@ -9,7 +9,6 @@ const MODULE_PATH = import.meta.url
  * Represents a MainMenuComponent, responsible for the underlying control logic of the main menu.
  */
 export class MainMenuComponent extends WebComponent {
-  test = 2
   /**
    * Constructs an instance of a MainMenuComponent.
    *
@@ -31,7 +30,7 @@ export class MainMenuComponent extends WebComponent {
    */
   #onButtonStart_Click (mouseEvent) {
     // Composed path contains every node the event traveled through, so zero is the element that dispatched the event.
-    if (mouseEvent.composedPath()[0].id === 'start_button') {
+    if (mouseEvent.composedPath()[0].id === 'start-button') {
       mouseEvent.stopPropagation()
       mouseEvent.preventDefault()
       mouseEvent.target.dispatchEvent(new CustomEvent(ComponentEvent.START.event, {
