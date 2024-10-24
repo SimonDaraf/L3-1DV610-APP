@@ -3,7 +3,6 @@
  */
 export class HtmlEvent {
   static CLICK = new HtmlEvent('click')
-  static DOM_CONTENT_LOADED = new HtmlEvent('DOMContentLoaded')
 
   #event
 

@@ -23,6 +23,7 @@ export class GameController extends EventTarget {
   #choiceView
   #betView
   #fundsView
+  #playerChoiceView
 
   #cardFolderPath
 
@@ -52,11 +53,22 @@ export class GameController extends EventTarget {
 
     // Append bet view to start.
     this.#betView = document.createElement(RegisteredComponent.BET_COMPONENT.componentName)
+    this.#playerChoiceView = document.createElement(RegisteredComponent.CHOICE_COMPONENT.componentName)
+    this.#playerChoiceView.style.display = 'None'
     this.#choiceView.appendChild(this.#betView)
+    this.#choiceView.appendChild(this.#playerChoiceView)
 
     this.#updatePlayerFundsView(this.#player.funds)
   
     this.#addEventListeners()
+  }
+
+  #addEventListeners () {
+    this.#gameComponent.addEventListener(ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit.bind(this), { signal: this.#abortController.signal })
+    this.#gameComponent.addEventListener(ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand.bind(this), { signal: this.#abortController.signal })
+    this.#betView.addEventListener(ComponentEvent.PLAYER_BET.event, this.#onPlayer_Bet.bind(this), { signal: this.#abortController.signal })
+    this.#playerChoiceView.addEventListener(ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit.bind(this), { signal: this.#abortController.signal })
+    this.#playerChoiceView.addEventListener(ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand.bind(this), { signal: this.#abortController.signal })
   }
 
   #startGame () {
@@ -70,13 +82,14 @@ export class GameController extends EventTarget {
     for (const card of this.#dealerHand.getCopyOfCards()) {
       this.#renderCardForDealer(card)
     }
+
+    this.#togglePlayerChoiceView()
   }
 
   #renderCardForPlayer (card) {
     const cardComponent = document.createElement(RegisteredComponent.CARD_COMPONENT.componentName)
     const img = document.createElement('img')
     img.setAttribute('slot', 'card-face')
-    console.log(this.#cardFolderPath)
     img.src = `${this.#cardFolderPath}/${card.fileName}`
     cardComponent.appendChild(img)
     this.#playerView.appendChild(cardComponent)
@@ -86,7 +99,6 @@ export class GameController extends EventTarget {
     const cardComponent = document.createElement(RegisteredComponent.CARD_COMPONENT.componentName)
     const img = document.createElement('img')
     img.setAttribute('slot', 'card-face')
-    console.log(this.#cardFolderPath)
     img.src = `${this.#cardFolderPath}/${card.fileName}`
     cardComponent.appendChild(img)
     this.#dealerView.appendChild(cardComponent)
@@ -94,12 +106,6 @@ export class GameController extends EventTarget {
 
   #updatePlayerFundsView (funds) {
     this.#fundsView.textContent = funds
-  }
-
-  #addEventListeners () {
-    this.#gameComponent.addEventListener(ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit.bind(this), { signal: this.#abortController.signal })
-    this.#gameComponent.addEventListener(ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand.bind(this), { signal: this.#abortController.signal })
-    this.#betView.addEventListener(ComponentEvent.PLAYER_BET.event, this.#onPlayer_Bet.bind(this), { signal: this.#abortController.signal })
   }
 
   #toggleBetView () {
@@ -110,13 +116,20 @@ export class GameController extends EventTarget {
     }
   }
 
+  #togglePlayerChoiceView () {
+    if (this.#playerChoiceView.style.display !== 'None') {
+      this.#playerChoiceView.style.display = 'Block'
+    } else {
+      this.#playerChoiceView.style.display = 'None'
+    }
+  }
+
   #onPlayer_Bet (eventObj) {
     this.#currentBet = eventObj.detail
     this.#toggleBetView()
     this.#player.deductFunds(this.#currentBet)
     this.#updatePlayerFundsView(this.#player.funds)
     this.#startGame()
-    console.log(this.#cardFolderPath)
   }
 
   #onPlayer_Hit () {

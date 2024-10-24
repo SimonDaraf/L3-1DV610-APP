@@ -3,6 +3,7 @@ import { GameComponent } from './components/game-component/gameComponent.js'
 import { MainMenuComponent } from './components/main-menu/mainMenuComponent.js'
 import { CardComponent } from './components/card-component/cardComponent.js'
 import { RegisteredComponent } from './registeredComponents.js'
+import { ChoiceComponent } from './components/choice-component/choiceComponent.js'
 
 /**
  * The component registry handles every registered component and is responsible accessing and returning component instances.
@@ -17,6 +18,7 @@ export class ComponentRegistry extends EventTarget {
     components.push(new GameComponent(RegisteredComponent.GAME_COMPONENT))
     components.push(new BetComponent(RegisteredComponent.BET_COMPONENT))
     components.push(new CardComponent(RegisteredComponent.CARD_COMPONENT))
+    components.push(new ChoiceComponent(RegisteredComponent.CHOICE_COMPONENT))
     this.#defineComponents(components)
   }
 
