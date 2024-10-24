@@ -30,7 +30,7 @@ export class BetComponent extends WebComponent {
    */
   #onPlayer_Bet (mouseEvent) {
     const betButton = mouseEvent.composedPath()[0]
-    if (!(bet.className === 'bet-button')) {
+    if (!(betButton.className === 'bet-button')) {
       return
     }
     const betValue = betButton.textContent.replace('$', '')
