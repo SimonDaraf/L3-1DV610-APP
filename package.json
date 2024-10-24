@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "simplified-web-components": "^1.4.0",
+    "simplified-web-components": "^1.5.2",
     "vite": "^5.4.9",
     "vitest": "^2.1.3"
   },
