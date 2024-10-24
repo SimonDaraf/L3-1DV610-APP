@@ -1,0 +1,14 @@
+html, body {
+  box-sizing: border-box;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #323232;
+  overflow: hidden;
+}
+
+#container {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+}
