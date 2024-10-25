@@ -38,7 +38,6 @@ export class GameController extends EventTarget {
 
     this.#cardFolderPath = new URL('../view/cards', import.meta.url).toString()
 
-    // Add view to edit.
     this.#choiceView = this.#gameComponent.shadowRoot.querySelector('#choice')
     this.#betView = document.createElement(RegisteredComponent.BET_COMPONENT.componentName)
     this.#playerChoiceView = document.createElement(RegisteredComponent.CHOICE_COMPONENT.componentName)
