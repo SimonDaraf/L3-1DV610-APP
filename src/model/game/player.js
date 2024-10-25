@@ -1,3 +1,4 @@
+import { Card } from './card.js'
 import { Hand } from './hand.js'
 
 /**
@@ -34,15 +35,39 @@ export class Player {
     return this.#hand
   }
 
+  /**
+   * Adds funds to player.
+   *
+   * @param {Number} fundsToAdd - The fudns to add.
+   */
   addFunds (fundsToAdd) {
     this.#funds += fundsToAdd
   }
 
+  /**
+   * Deducts funds from player.
+   *
+   * @param {Number} fundsToDeduct - The funds to deduct.
+   */
   deductFunds (fundsToDeduct) {
     this.#funds -= fundsToDeduct
   }
 
+  /**
+   * Adds a card to the hand.
+   *
+   * @param {Card} card - Card to add.
+   */
   addCardToHand (card) {
     this.#hand.addCardToHand(card)
+  }
+
+  /**
+   * Empties the hand and returns the cards.
+   *
+   * @returns {Card[]} - The cards emptied.
+   */
+  emptyHand () {
+    return this.#hand.emptyHand()
   }
 }

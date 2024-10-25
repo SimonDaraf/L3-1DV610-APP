@@ -71,9 +71,29 @@ export class PlayerController {
     } else if (result === Result.PLAYER_WINNER) {
       this.#player.addFunds(this.#currentBet * this.#WIN_FACTOR)
       this.#updatePlayerFundsView(this.#player.funds)
+    } else if (result === Result.BLACKJACK) {
+      this.#player.addFunds(this.#currentBet * this.#BLACK_JACK_WIN_FACTOR)
+      this.#updatePlayerFundsView(this.#player.funds)
     } else {
       this.#player.addFunds(this.#currentBet)
       this.#updatePlayerFundsView(this.#player.funds)
     }
+  }
+
+  /**
+   * Checks if the games is over.
+   *
+   * @returns {Boolean} - Whether the game is over.
+   */
+  isGameOver () {
+    return this.#player.funds <= 0
+  }
+
+  /**
+   * Empties hand, view and returns cards in hand.
+   */
+  emptyHandAndView () {
+    this.#playerView.textContent = ''
+    return this.#player.emptyHand()
   }
 }

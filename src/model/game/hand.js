@@ -77,6 +77,17 @@ export class Hand {
   }
 
   /**
+   * Empties the hand and returns the cards.
+   *
+   * @returns {Card[]} - The cards in hand.
+   */
+  emptyHand () {
+    const cards = this.#cardsInHand
+    this.#cardsInHand = []
+    return cards
+  }
+
+  /**
    * Returns the amount of aces in hand.
    *
    * @returns {Number} - The amount of aces in hand.

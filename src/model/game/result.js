@@ -2,9 +2,10 @@
  * An enum like class containing game results.
  */
 export class Result {
-  static PLAYER_WINNER = new Result('You Win')
-  static DEALER_WINNER = new Result('Dealer Win')
-  static DRAW = new Result('Draw')
+  static PLAYER_WINNER = new Result('Player Win!')
+  static DEALER_WINNER = new Result('Dealer Win!')
+  static DRAW = new Result('Draw!')
+  static BLACKJACK = new Result('BlackJack!')
 
   #value
 

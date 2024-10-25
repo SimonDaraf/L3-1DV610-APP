@@ -62,8 +62,16 @@ export class BlackJack {
    * @returns {Result} - The result enum.
    */
   evaluateWinner(playerHandValue, dealerHandValue) {
-    if (dealerHandValue > this.#BLACKJACK) {
+    // If player hand is busted, dealer can't be busted so check first.
+    if (this.isHandBusted(playerHandValue)) {
+      return Result.DEALER_WINNER
+    }
+    if (this.isHandBusted(dealerHandValue)) {
       return Result.PLAYER_WINNER
+    }
+
+    if (this.isHandNaturalWinner(playerHandValue) && !this.isHandNaturalWinner(dealerHandValue)) {
+      return Result.BLACKJACK
     }
 
     if (playerHandValue > dealerHandValue) {

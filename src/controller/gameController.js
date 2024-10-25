@@ -41,6 +41,8 @@ export class GameController extends EventTarget {
 
     // Add view to edit.
     this.#choiceView = this.#gameComponent.shadowRoot.querySelector('#choice')
+    this.#betView = document.createElement(RegisteredComponent.BET_COMPONENT.componentName)
+    this.#playerChoiceView = document.createElement(RegisteredComponent.CHOICE_COMPONENT.componentName)
 
     const playerView = this.#gameComponent.shadowRoot.querySelector('#player-hand')
     const fundsView = this.#gameComponent.shadowRoot.querySelector('#fund-displayer')
@@ -49,9 +51,6 @@ export class GameController extends EventTarget {
     const dealerView = this.#gameComponent.shadowRoot.querySelector('#dealer-hand')
     this.#dealerController = new DealerController(dealerView)
 
-    // Append bet view to start.
-    this.#betView = document.createElement(RegisteredComponent.BET_COMPONENT.componentName)
-    this.#playerChoiceView = document.createElement(RegisteredComponent.CHOICE_COMPONENT.componentName)
     this.#choiceView.appendChild(this.#betView)
     this.#choiceView.appendChild(this.#playerChoiceView)
     this.#togglePlayerChoiceView()
@@ -68,6 +67,7 @@ export class GameController extends EventTarget {
   }
 
   #startGame () {
+    this.#cleanUpRound()
     this.#blackJackInstance.shuffle()
     const startingHandSize = this.#blackJackInstance.startingHandSize
 
@@ -77,10 +77,25 @@ export class GameController extends EventTarget {
     }
 
     if (this.#blackJackInstance.isHandNaturalWinner(this.#playerController.getHandValue())) {
-      console.log('natural winner')
+      this.#evaluateResults()
     }
 
     this.#togglePlayerChoiceView()
+  }
+
+  #cleanUpRound () {
+    const playerCards = this.#playerController.emptyHandAndView()
+    const dealerCards = this.#dealerController.emptyHandAndView()
+
+    const cards = playerCards.concat(dealerCards) // Join the arrays.
+    this.#blackJackInstance.returnCards(cards)
+  }
+
+  #isGameOver () {
+    if (this.#playerController.isGameOver()) {
+      return true
+    }
+    return false
   }
 
   #takeDealerTurn () {
@@ -109,16 +124,14 @@ export class GameController extends EventTarget {
   #evaluateResults () {
     const result = this.#blackJackInstance.evaluateWinner(this.#playerController.getHandValue(), this.#dealerController.getHandValue())
     this.#playerController.updateFundsBasedOnResult(result)
-    if (result === Result.DEALER_WINNER) {
-      // Dealer win
-      console.log('dealer win')
-    } else if (result === Result.PLAYER_WINNER) {
-      // Player win
-      console.log('player win')
-    } else {
-      // Draw
-      console.log('draw')
+
+    if (this.#isGameOver()) {
+      this.#dispatchGameOver()
+      return
     }
+
+    this.#toggleBetView()
+    this.#changeBetPrompt(result)
   }
 
   #isHandBusted (handValue) {
@@ -152,12 +165,23 @@ export class GameController extends EventTarget {
     }
   }
 
+  #changeBetPrompt (result) {
+    const promptElement = this.#betView.shadowRoot.querySelector('#bet-header')
+    promptElement.textContent = result.value
+  }
+
   #togglePlayerChoiceView () {
     if (this.#playerChoiceView.style.display !== 'none') {
       this.#playerChoiceView.style.display = 'none'
     } else {
       this.#playerChoiceView.style.display = 'block'
     }
+  }
+
+  #dispatchGameOver () {
+    this.dispatchEvent(new CustomEvent(ComponentEvent.GAME_OVER.event, {
+      bubbles: true
+    }))
   }
 
   #onPlayer_Bet (eventObj) {
@@ -175,7 +199,8 @@ export class GameController extends EventTarget {
   #onPlayer_Hit () {
     this.#dealCardToPlayer()
     if (this.#isHandBusted(this.#playerController.getHandValue())) {
-      console.log('busted')
+      this.#togglePlayerChoiceView()
+      this.#evaluateResults()
     }
   }
 

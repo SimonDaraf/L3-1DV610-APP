@@ -53,4 +53,12 @@ export class DealerController {
   getHandValue () {
     return this.#dealerHand.getHandValue()
   }
+
+  /**
+   * Empties hand, view and returns cards in hand.
+   */
+  emptyHandAndView () {
+    this.#dealerView.textContent = ''
+    return this.#dealerHand.emptyHand()
+  }
 }
