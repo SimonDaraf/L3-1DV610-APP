@@ -25,7 +25,7 @@ export class BlackJack {
    *
    * @type {Number}
    */
-  get STARTING_HAND_SIZE () {
+  get startingHandSize () {
     return this.#STARTING_HAND_SIZE
   }
 
@@ -46,19 +46,6 @@ export class BlackJack {
   }
 
   /**
-   * Deal cards to player and dealer.
-   *
-   * @param {Hand} playerHand - The player hand.
-   * @param {Hand} dealerHand - The dealer hand.
-   */
-  startDealingProcess (playerHand, dealerHand) {
-    for (let i = 0; i < this.#STARTING_HAND_SIZE; i++) {
-      playerHand.addCardToHand(this.dealCard())
-      dealerHand.addCardToHand(this.dealCard())
-    }
-  }
-
-  /**
    * Deals the top card of the deck.
    *
    * @returns {Card} - The top card.
@@ -70,17 +57,18 @@ export class BlackJack {
   /**
    * Evaluates the winner.
    *
-   * @param {Hand} playerHand - The player hand.
-   * @param {Hand} dealerHand - The dealer hand.
+   * @param {Number} playerHandValue - The player hand value.
+   * @param {Number} dealerHandValue - The dealer hand value.
    * @returns {Result} - The result enum.
    */
-  evaluateWinner(playerHand, dealerHand) {
-    const playerValue = playerHand.getHandValue()
-    const dealerValue = dealerHand.getHandValue()
-
-    if (playerValue > dealerValue) {
+  evaluateWinner(playerHandValue, dealerHandValue) {
+    if (dealerHandValue > this.#BLACKJACK) {
       return Result.PLAYER_WINNER
-    } else if (playerValue === dealerValue) {
+    }
+
+    if (playerHandValue > dealerHandValue) {
+      return Result.PLAYER_WINNER
+    } else if (playerHandValue === dealerHandValue) {
       return Result.DRAW
     } else {
       return Result.DEALER_WINNER
@@ -90,11 +78,11 @@ export class BlackJack {
   /**
    * Checks if the specified hand is busted.
    *
-   * @param {Hand} hand - The hand to check.
+   * @param {Number} handValue - The hand value to check.
    * @returns {Boolean} - If the hand is busted.
    */
-  isHandBusted (hand) {
-    if (hand.getHandValue() > 21) {
+  isHandBusted (handValue) {
+    if (handValue > 21) {
       return true
     }
     return false
@@ -103,11 +91,11 @@ export class BlackJack {
   /**
    * Checks if the hand is a natural winner.
    *
-   * @param {Hand} hand - The hand to check.
+   * @param {Number} handValue - The hand value to check.
    * @returns {Boolean} - If the hand is a natural winner.
    */
-  isHandNaturalWinner (hand) {
-    if (hand.getCurrentHandSize() === this.#STARTING_HAND_SIZE && hand.getHandValue() === this.#BLACKJACK) {
+  isHandNaturalWinner (handValue) {
+    if (handValue === this.#STARTING_HAND_SIZE && handValue === this.#BLACKJACK) {
       return true
     }
     return false

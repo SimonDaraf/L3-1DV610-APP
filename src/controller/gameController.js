@@ -1,10 +1,11 @@
 import { BlackJack } from '../model/game/blackjack.js'
 import { Deck } from '../model/game/deck.js'
-import { Hand } from '../model/game/hand.js'
-import { Card } from '../model/game/card.js'
-import { Player } from '../model/game/player.js'
+import { Action } from '../model/game/action.js'
+import { Result } from '../model/game/result.js'
 import { ComponentEvent } from './events/componentEvents.js'
 import { RegisteredComponent } from './registeredComponents.js'
+import { PlayerController } from './playerController.js'
+import { DealerController } from './dealerController.js'
 
 /**
  * Controlls the game instance.
@@ -14,15 +15,11 @@ export class GameController extends EventTarget {
   #abortController
 
   #blackJackInstance
-  #dealerHand
-  #player
-  #currentBet
+  #playerController
+  #dealerController
 
-  #playerView
-  #dealerView
   #choiceView
   #betView
-  #fundsView
   #playerChoiceView
 
   #cardFolderPath
@@ -39,26 +36,25 @@ export class GameController extends EventTarget {
     this.#abortController = new AbortController()
 
     this.#blackJackInstance = new BlackJack(new Deck())
-    this.#dealerHand = new Hand()
-    this.#player = new Player(new Hand())
-    this.#currentBet = 0
 
     this.#cardFolderPath = new URL('../view/cards', import.meta.url).toString()
 
     // Add view to edit.
-    this.#playerView = this.#gameComponent.shadowRoot.querySelector('#player-hand')
-    this.#dealerView = this.#gameComponent.shadowRoot.querySelector('#dealer-hand')
     this.#choiceView = this.#gameComponent.shadowRoot.querySelector('#choice')
-    this.#fundsView = this.#gameComponent.shadowRoot.querySelector('#fund-displayer')
+
+    const playerView = this.#gameComponent.shadowRoot.querySelector('#player-hand')
+    const fundsView = this.#gameComponent.shadowRoot.querySelector('#fund-displayer')
+    this.#playerController = new PlayerController(playerView, fundsView)
+
+    const dealerView = this.#gameComponent.shadowRoot.querySelector('#dealer-hand')
+    this.#dealerController = new DealerController(dealerView)
 
     // Append bet view to start.
     this.#betView = document.createElement(RegisteredComponent.BET_COMPONENT.componentName)
     this.#playerChoiceView = document.createElement(RegisteredComponent.CHOICE_COMPONENT.componentName)
-    this.#playerChoiceView.style.display = 'None'
     this.#choiceView.appendChild(this.#betView)
     this.#choiceView.appendChild(this.#playerChoiceView)
-
-    this.#updatePlayerFundsView(this.#player.funds)
+    this.#togglePlayerChoiceView()
   
     this.#addEventListeners()
   }
@@ -73,35 +69,70 @@ export class GameController extends EventTarget {
 
   #startGame () {
     this.#blackJackInstance.shuffle()
-    this.#blackJackInstance.startDealingProcess(this.#player.hand, this.#dealerHand)
+    const startingHandSize = this.#blackJackInstance.startingHandSize
 
-    for (const card of this.#player.hand.getCopyOfCards()) {
-      this.#renderCardForPlayer(card)
+    for (let i = 0; i < startingHandSize; i++) {
+      this.#dealCardToPlayer()
+      this.#dealCardToDealer()
     }
 
-    for (const card of this.#dealerHand.getCopyOfCards()) {
-      this.#renderCardForDealer(card)
+    if (this.#blackJackInstance.isHandNaturalWinner(this.#playerController.getHandValue())) {
+      console.log('natural winner')
     }
-
-    // Evaluate if player has blackjack.
 
     this.#togglePlayerChoiceView()
   }
 
-  #renderCardForPlayer (card) {
-    const cardElement = this.#createCardElement(card)
-    this.#playerView.appendChild(cardElement)
+  #takeDealerTurn () {
+    let continueTurn = true
+    while (continueTurn) {
+      continueTurn = this.#dealerTurnCycle()
+    }
+    this.#evaluateResults()
   }
 
-  #renderCardForDealer (card) {
-    const cardElement = this.#createCardElement(card)
-    this.#dealerView.appendChild(cardElement)
+  #dealerTurnCycle () {
+    const action = this.#dealerController.getNextAction()
+
+    if (action === Action.HIT) {
+      this.#dealCardToDealer()
+    } else {
+      return false
+    }
+
+    if (this.#isHandBusted(this.#dealerController.getHandValue())) {
+      return false
+    }
+    return true
+  }
+
+  #evaluateResults () {
+    const result = this.#blackJackInstance.evaluateWinner(this.#playerController.getHandValue(), this.#dealerController.getHandValue())
+    this.#playerController.updateFundsBasedOnResult(result)
+    if (result === Result.DEALER_WINNER) {
+      // Dealer win
+      console.log('dealer win')
+    } else if (result === Result.PLAYER_WINNER) {
+      // Player win
+      console.log('player win')
+    } else {
+      // Draw
+      console.log('draw')
+    }
+  }
+
+  #isHandBusted (handValue) {
+    return this.#blackJackInstance.isHandBusted(handValue)
   }
 
   #dealCardToPlayer () {
     const card = this.#blackJackInstance.dealCard()
-    this.#renderCardForPlayer(card)
-    this.#player.addCardToHand(card)
+    this.#playerController.addCard(card, this.#createCardElement(card))
+  }
+
+  #dealCardToDealer () {
+    const card = this.#blackJackInstance.dealCard()
+    this.#dealerController.addCard(card, this.#createCardElement(card))
   }
 
   #createCardElement (card) {
@@ -113,51 +144,43 @@ export class GameController extends EventTarget {
     return cardComponent
   }
 
-  #evaluatePlayerStatus () {
-    if (this.#blackJackInstance.isHandBusted(this.#player.hand)) {
-      console.log('busted')
-    }
-  }
-
-  #updatePlayerFundsView (funds) {
-    this.#fundsView.textContent = funds
-  }
-
   #toggleBetView () {
-    if (this.#betView.style.display !== 'None') {
-      this.#betView.style.display = 'None'
+    if (this.#betView.style.display !== 'none') {
+      this.#betView.style.display = 'none'
     } else {
-      this.#betView.style.display = 'Block'
+      this.#betView.style.display = 'block'
     }
   }
 
   #togglePlayerChoiceView () {
-    if (this.#playerChoiceView.style.display !== 'None') {
-      this.#playerChoiceView.style.display = 'Block'
+    if (this.#playerChoiceView.style.display !== 'none') {
+      this.#playerChoiceView.style.display = 'none'
     } else {
-      this.#playerChoiceView.style.display = 'None'
+      this.#playerChoiceView.style.display = 'block'
     }
   }
 
   #onPlayer_Bet (eventObj) {
     const bet = eventObj.detail
-
-    if (bet > this.#player.funds) {
+    try {
+      this.#playerController.tryPlaceBet(bet)
+    } catch (error) {
       return
     }
-
-    this.#currentBet = bet
+    
     this.#toggleBetView()
-    this.#player.deductFunds(this.#currentBet)
-    this.#updatePlayerFundsView(this.#player.funds)
     this.#startGame()
   }
 
   #onPlayer_Hit () {
     this.#dealCardToPlayer()
-    this.#evaluatePlayerStatus()
+    if (this.#isHandBusted(this.#playerController.getHandValue())) {
+      console.log('busted')
+    }
   }
 
   #onPlayer_Stand () {
+    this.#togglePlayerChoiceView()
+    this.#takeDealerTurn()
   }
 }
