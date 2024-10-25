@@ -3,6 +3,7 @@
  */
 export class RegisteredComponent {
   static MAIN_MENU_COMPONENT = new RegisteredComponent('main-menu-component')
+  static GAME_OVER_COMPONENT = new RegisteredComponent('game-over-component')
   static GAME_COMPONENT = new RegisteredComponent('game-component')
   static BET_COMPONENT = new RegisteredComponent('bet-component')
   static CHOICE_COMPONENT = new RegisteredComponent('choice-component')

@@ -57,6 +57,13 @@ export class GameController extends EventTarget {
     this.#addEventListeners()
   }
 
+  /**
+   * Aborts attached listeners.
+   */
+  abortListeners () {
+    this.#abortController.abort()
+  }
+
   #addEventListeners () {
     this.#gameComponent.addEventListener(ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit.bind(this), { signal: this.#abortController.signal })
     this.#gameComponent.addEventListener(ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand.bind(this), { signal: this.#abortController.signal })
@@ -189,6 +196,7 @@ export class GameController extends EventTarget {
     try {
       this.#playerController.tryPlaceBet(bet)
     } catch (error) {
+      window.alert('Not enough funds!')
       return
     }
     
