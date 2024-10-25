@@ -33,7 +33,7 @@ export class BetComponent extends WebComponent {
     if (!(betButton.className === 'bet-button')) {
       return
     }
-    
+
     const betValue = betButton.textContent.replace('$', '')
 
     if (Number.isNaN(betValue)) {

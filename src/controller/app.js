@@ -49,7 +49,6 @@ export class App {
       const mainMenu = document.querySelector(componentName)
       this.#container.removeChild(mainMenu)
     } catch (e) {
-      return
     }
   }
 

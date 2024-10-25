@@ -61,7 +61,7 @@ export class BlackJack {
    * @param {Hand} dealerHand - The dealer hand.
    * @returns {Result} - The result enum.
    */
-  evaluateWinner(playerHand, dealerHand) {
+  evaluateWinner (playerHand, dealerHand) {
     // If player hand is busted, dealer can't be busted so check first.
     if (this.isHandBusted(playerHand.getHandValue())) {
       return Result.DEALER_WINNER

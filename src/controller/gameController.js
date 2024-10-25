@@ -53,7 +53,7 @@ export class GameController extends EventTarget {
     this.#choiceView.appendChild(this.#betView)
     this.#choiceView.appendChild(this.#playerChoiceView)
     this.#togglePlayerChoiceView()
-  
+
     this.#addEventListeners()
   }
 
@@ -199,7 +199,7 @@ export class GameController extends EventTarget {
       window.alert('Not enough funds!')
       return
     }
-    
+
     this.#toggleBetView()
     this.#startGame()
   }

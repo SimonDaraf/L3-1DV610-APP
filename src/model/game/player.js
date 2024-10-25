@@ -9,7 +9,7 @@ export class Player {
   #hand
 
   /**
-   * 
+   *
    * @param {Hand} hand - The player hand.
    */
   constructor (hand) {
