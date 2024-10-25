@@ -52,12 +52,12 @@ export class PlayerController {
   }
 
   /**
-   * Get the player hand value.
+   * Get the player hand.
    *
-   * @returns {Number} - The players hand value.
+   * @returns {Hand} - The player hand.
    */
-  getHandValue () {
-    return this.#player.hand.getHandValue()
+  getHand () {
+    return this.#player.hand
   }
 
   /**

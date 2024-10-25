@@ -30,6 +30,15 @@ export class DealerController {
   }
 
   /**
+   * Get the player hand.
+   *
+   * @returns {Hand} - The player hand.
+   */
+  getHand () {
+    return this.#dealerHand
+  }
+
+  /**
    * Determines the dealers next move.
    *
    * @returns {Action} - The dealers next action.

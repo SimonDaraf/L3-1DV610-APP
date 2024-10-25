@@ -1,7 +1,6 @@
 import { BlackJack } from '../model/game/blackjack.js'
 import { Deck } from '../model/game/deck.js'
 import { Action } from '../model/game/action.js'
-import { Result } from '../model/game/result.js'
 import { ComponentEvent } from './events/componentEvents.js'
 import { RegisteredComponent } from './registeredComponents.js'
 import { PlayerController } from './playerController.js'
@@ -76,8 +75,9 @@ export class GameController extends EventTarget {
       this.#dealCardToDealer()
     }
 
-    if (this.#blackJackInstance.isHandNaturalWinner(this.#playerController.getHandValue())) {
+    if (this.#blackJackInstance.isHandNaturalWinner(this.#playerController.getHand())) {
       this.#evaluateResults()
+      return
     }
 
     this.#togglePlayerChoiceView()
@@ -115,14 +115,14 @@ export class GameController extends EventTarget {
       return false
     }
 
-    if (this.#isHandBusted(this.#dealerController.getHandValue())) {
+    if (this.#isHandBusted(this.#dealerController.getHand().getHandValue())) {
       return false
     }
     return true
   }
 
   #evaluateResults () {
-    const result = this.#blackJackInstance.evaluateWinner(this.#playerController.getHandValue(), this.#dealerController.getHandValue())
+    const result = this.#blackJackInstance.evaluateWinner(this.#playerController.getHand(), this.#dealerController.getHand())
     this.#playerController.updateFundsBasedOnResult(result)
 
     if (this.#isGameOver()) {
@@ -198,7 +198,7 @@ export class GameController extends EventTarget {
 
   #onPlayer_Hit () {
     this.#dealCardToPlayer()
-    if (this.#isHandBusted(this.#playerController.getHandValue())) {
+    if (this.#isHandBusted(this.#playerController.getHand().getHandValue())) {
       this.#togglePlayerChoiceView()
       this.#evaluateResults()
     }
