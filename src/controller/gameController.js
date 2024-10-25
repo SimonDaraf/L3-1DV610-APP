@@ -79,7 +79,10 @@ export class GameController extends EventTarget {
 
     for (let i = 0; i < startingHandSize; i++) {
       this.#dealCardToPlayer()
-      this.#dealCardToDealer()
+      // Do not deal two cards to dealer at the start.
+      if (i < startingHandSize - 1) {
+        this.#dealCardToDealer()
+      }
     }
 
     if (this.#blackJackInstance.isHandNaturalWinner(this.#playerController.getHand())) {
