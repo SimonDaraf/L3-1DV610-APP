@@ -7,6 +7,7 @@ import { Result } from './result.js'
 export class BlackJackRules {
   #STARTING_HAND_SIZE = 2
   #BLACKJACK = 21
+  #DEALER_HIT_LIMIT = 17
 
   /**
    * Evaluates the winner.
@@ -40,14 +41,11 @@ export class BlackJackRules {
   /**
    * Checks if the specified hand is busted.
    *
-   * @param {Number} handValue - The hand value to check.
+   * @param {Hand} hand - The hand to check.
    * @returns {Boolean} - If the hand is busted.
    */
-  isHandBusted (handValue) {
-    if (handValue > 21) {
-      return true
-    }
-    return false
+  isHandBusted (hand) {
+    return hand.getHandValue() > 21
   }
 
   /**
@@ -61,5 +59,15 @@ export class BlackJackRules {
       return true
     }
     return false
+  }
+
+  /**
+   * Check if dealer can hit.
+   *
+   * @param {Hand} hand - The hand to check.
+   * @returns {Boolean} - If the dealer can hit.
+   */
+  canDealerHit (hand) {
+    return hand.getHandValue() < this.#DEALER_HIT_LIMIT
   }
 }
