@@ -5,7 +5,6 @@ import { Hand } from './hand.js'
  * Represents a blackjack player.
  */
 export class Player {
-  #funds
   #hand
 
   /**
@@ -13,17 +12,7 @@ export class Player {
    * @param {Hand} hand - The player hand.
    */
   constructor (hand) {
-    this.#funds = 50
     this.#hand = hand
-  }
-
-  /**
-   * Get current player funds.
-   *
-   * @type {Number}
-   */
-  get funds () {
-    return this.#funds
   }
 
   /**
@@ -33,24 +22,6 @@ export class Player {
    */
   get hand () {
     return this.#hand
-  }
-
-  /**
-   * Adds funds to player.
-   *
-   * @param {Number} fundsToAdd - The fudns to add.
-   */
-  addFunds (fundsToAdd) {
-    this.#funds += fundsToAdd
-  }
-
-  /**
-   * Deducts funds from player.
-   *
-   * @param {Number} fundsToDeduct - The funds to deduct.
-   */
-  deductFunds (fundsToDeduct) {
-    this.#funds -= fundsToDeduct
   }
 
   /**
