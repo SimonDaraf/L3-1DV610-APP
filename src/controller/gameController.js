@@ -1,6 +1,7 @@
-import { BlackJack } from '../model/game/blackjack.js'
-import { Deck } from '../model/game/deck.js'
-import { Action } from '../model/game/action.js'
+import { BlackJack } from '../model/game/blackjack/blackjack.js'
+import { Action } from '../model/game/blackjack/action.js'
+import { Result } from '../model/game/blackjack/result.js'
+import { BlackJackEvent } from '../model/game/blackjack/blackjackEvents.js'
 import { ComponentEvent } from './events/componentEvents.js'
 import { RegisteredComponent } from './registeredComponents.js'
 import { PlayerController } from './playerController.js'
@@ -12,15 +13,12 @@ import { DealerController } from './dealerController.js'
 export class GameController extends EventTarget {
   #gameComponent
   #abortController
-
   #blackJackInstance
   #playerController
   #dealerController
-
   #choiceView
   #betView
   #playerChoiceView
-
   #cardFolderPath
 
   /**
@@ -33,14 +31,11 @@ export class GameController extends EventTarget {
 
     this.#gameComponent = gameComponent
     this.#abortController = new AbortController()
-
-    this.#blackJackInstance = new BlackJack(new Deck())
-
-    this.#cardFolderPath = new URL('../view/cards', import.meta.url).toString()
-
+    this.#blackJackInstance = new BlackJack()
     this.#choiceView = this.#gameComponent.shadowRoot.querySelector('#choice')
     this.#betView = document.createElement(RegisteredComponent.BET_COMPONENT.componentName)
     this.#playerChoiceView = document.createElement(RegisteredComponent.CHOICE_COMPONENT.componentName)
+    this.#cardFolderPath = new URL('../view/cards', import.meta.url).toString()
 
     const playerView = this.#gameComponent.shadowRoot.querySelector('#player-hand')
     const fundsView = this.#gameComponent.shadowRoot.querySelector('#fund-displayer')
@@ -64,97 +59,40 @@ export class GameController extends EventTarget {
   }
 
   #addEventListeners () {
-    this.#gameComponent.addEventListener(ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit.bind(this), { signal: this.#abortController.signal })
-    this.#gameComponent.addEventListener(ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand.bind(this), { signal: this.#abortController.signal })
-    this.#betView.addEventListener(ComponentEvent.PLAYER_BET.event, this.#onPlayer_Bet.bind(this), { signal: this.#abortController.signal })
-    this.#playerChoiceView.addEventListener(ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit.bind(this), { signal: this.#abortController.signal })
-    this.#playerChoiceView.addEventListener(ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand.bind(this), { signal: this.#abortController.signal })
+    this.#addEvent(this.#betView, ComponentEvent.PLAYER_BET.event, this.#onPlayer_Bet)
+    this.#addEvent(this.#playerChoiceView, ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit)
+    this.#addEvent(this.#playerChoiceView, ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand)
+    this.#addEvent(this.#blackJackInstance, BlackJackEvent.PLAYER_CARD.event, this.#onBlackJack_PlayerCard)
+    this.#addEvent(this.#blackJackInstance, BlackJackEvent.DEALER_CARD.event, this.#onBlackJack_DealerCard)
+  }
+
+  #addEvent (target, eventName, method) {
+    target.addEventListener(eventName, method.bind(this), { signal: this.#abortController.signal })
   }
 
   #startGame () {
-    this.#cleanUpRound()
-    this.#blackJackInstance.shuffle()
-    const startingHandSize = this.#blackJackInstance.startingHandSize
-
-    for (let i = 0; i < startingHandSize; i++) {
-      this.#dealCardToPlayer()
-      // Do not deal two cards to dealer at the start.
-      if (i < startingHandSize - 1) {
-        this.#dealCardToDealer()
-      }
-    }
-
-    if (this.#blackJackInstance.isHandNaturalWinner(this.#playerController.getHand())) {
-      this.#evaluateResults()
-      return
-    }
-
+    this.#playerController.emptyView()
+    this.#dealerController.emptyView()
+    this.#blackJackInstance.startGame()
     this.#togglePlayerChoiceView()
   }
 
-  #cleanUpRound () {
-    const playerCards = this.#playerController.emptyHandAndView()
-    const dealerCards = this.#dealerController.emptyHandAndView()
-
-    const cards = playerCards.concat(dealerCards) // Join the arrays.
-    this.#blackJackInstance.returnCards(cards)
+  #startDealerTurn () {
+    this.#blackJackInstance.takeDealerTurn()
+    this.#evaluateGameResult()
   }
 
-  #isGameOver () {
-    if (this.#playerController.isGameOver()) {
-      return true
-    }
-    return false
-  }
-
-  #takeDealerTurn () {
-    let continueTurn = true
-    while (continueTurn) {
-      continueTurn = this.#dealerTurnCycle()
-    }
-    this.#evaluateResults()
-  }
-
-  #dealerTurnCycle () {
-    const action = this.#dealerController.getNextAction()
-
-    if (action === Action.HIT) {
-      this.#dealCardToDealer()
-    } else {
-      return false
-    }
-
-    if (this.#isHandBusted(this.#dealerController.getHand().getHandValue())) {
-      return false
-    }
-    return true
-  }
-
-  #evaluateResults () {
-    const result = this.#blackJackInstance.evaluateWinner(this.#playerController.getHand(), this.#dealerController.getHand())
+  #evaluateGameResult () {
+    const result = this.#blackJackInstance.getGameResults()
     this.#playerController.updateFundsBasedOnResult(result)
 
-    if (this.#isGameOver()) {
+    if (this.#playerController.isGameOver()) {
       this.#dispatchGameOver()
-      return
+    } else {
+      this.#blackJackInstance.reset()
+      this.#changeBetPrompt(result)
+      this.#toggleBetView()
     }
-
-    this.#toggleBetView()
-    this.#changeBetPrompt(result)
-  }
-
-  #isHandBusted (handValue) {
-    return this.#blackJackInstance.isHandBusted(handValue)
-  }
-
-  #dealCardToPlayer () {
-    const card = this.#blackJackInstance.dealCard()
-    this.#playerController.addCard(card, this.#createCardElement(card))
-  }
-
-  #dealCardToDealer () {
-    const card = this.#blackJackInstance.dealCard()
-    this.#dealerController.addCard(card, this.#createCardElement(card))
   }
 
   #createCardElement (card) {
@@ -207,15 +145,24 @@ export class GameController extends EventTarget {
   }
 
   #onPlayer_Hit () {
-    this.#dealCardToPlayer()
-    if (this.#isHandBusted(this.#playerController.getHand().getHandValue())) {
+    if (this.#blackJackInstance.takePlayerAction(Action.HIT)) {
       this.#togglePlayerChoiceView()
-      this.#evaluateResults()
+      this.#startDealerTurn()
     }
   }
 
   #onPlayer_Stand () {
     this.#togglePlayerChoiceView()
-    this.#takeDealerTurn()
+    this.#startDealerTurn()
+  }
+
+  #onBlackJack_PlayerCard (eventObj) {
+    const card = eventObj.detail
+    this.#playerController.addCard(this.#createCardElement(card))
+  }
+
+  #onBlackJack_DealerCard (eventObj) {
+    const card = eventObj.detail
+    this.#dealerController.addCard(this.#createCardElement(card))
   }
 }
