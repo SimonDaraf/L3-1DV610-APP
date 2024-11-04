@@ -22,6 +22,8 @@ export class BlackJack extends EventTarget {
    * Constructs an instance of a black jack game.
    */
   constructor () {
+    super()
+
     this.#player = new Player(new Hand())
     this.#dealer = new Player(new Hand())
     this.#deck = new Deck()
@@ -103,13 +105,13 @@ export class BlackJack extends EventTarget {
   #dealCard (event, player) {
     const card = this.#deck.popTopCard()
     player.addCardToHand(card)
-    this.#dispatchPlayerCardEvent(event, player)
+    this.#dispatchPlayerCardEvent(event, card)
   }
 
-  #dispatchPlayerCardEvent (event, player) {
-    this.dispatchEvent(new CustomEvent(event.value, {
+  #dispatchPlayerCardEvent (event, card) {
+    this.dispatchEvent(new CustomEvent(event.event, {
       bubbles: true,
-      detail: player.hand
+      detail: card
     }))
   }
 }
