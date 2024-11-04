@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest'
-import { Hand } from '../src/model/game/hand.js'
-import { Card } from '../src/model/game/card.js'
+import { Hand } from '../src/model/game/blackjack/hand.js'
 import { CardSuit } from '../src/model/game/cardSuits.js'
 import { CardRank } from '../src/model/game/cardRanks.js'
+import { Card } from '../src/model/game/card.js'
 
 test('Assert correct hand value', () => {
   // Arrange

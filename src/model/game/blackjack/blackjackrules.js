@@ -18,10 +18,10 @@ export class BlackJackRules {
    */
   evaluateWinner (playerHand, dealerHand) {
     // If player hand is busted, dealer can't be busted so check first.
-    if (this.isHandBusted(playerHand.getHandValue())) {
+    if (this.isHandBusted(playerHand)) {
       return Result.DEALER_WINNER
     }
-    if (this.isHandBusted(dealerHand.getHandValue())) {
+    if (this.isHandBusted(dealerHand)) {
       return Result.PLAYER_WINNER
     }
 

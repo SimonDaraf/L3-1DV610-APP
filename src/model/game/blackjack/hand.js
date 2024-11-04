@@ -1,5 +1,5 @@
-import { Card } from './card.js'
-import { CardRank } from './cardRanks.js'
+import { Card } from '../card.js'
+import { CardRank } from '../cardRanks.js'
 
 /**
  * Represents a playing hand.
