@@ -1,5 +1,3 @@
-import { Player } from '../model/game/player.js'
-import { Hand } from '../model/game/hand.js'
 import { Result } from '../model/game/result.js'
 
 /**
@@ -8,7 +6,8 @@ import { Result } from '../model/game/result.js'
 export class PlayerController {
   #playerView
   #fundsView
-  #player
+
+  #funds
   #currentBet
   #WIN_FACTOR = 2
   #BLACK_JACK_WIN_FACTOR = 2.5
@@ -22,42 +21,42 @@ export class PlayerController {
   constructor (playerView, fundsView) {
     this.#playerView = playerView
     this.#fundsView = fundsView
-    this.#player = new Player(new Hand())
+    this.#funds = 50
     this.#currentBet = 0
-    this.#updatePlayerFundsView(this.#player.funds)
-  }
-
-  #updatePlayerFundsView (funds) {
-    this.#fundsView.textContent = funds
+    this.#updatePlayerFundsView(this.#funds)
   }
 
   /**
    * Add card to player and playerView.
    *
-   * @param {Card} card - The card to add.
    * @param {HTMLImageElement} cardElement - The cards image element.
    */
-  addCard (card, cardElement) {
-    this.#player.addCardToHand(card)
+  addCard (cardElement) {
     this.#playerView.appendChild(cardElement)
   }
 
+  /**
+   * Tries to place a bet.
+   *
+   * @throws {Error} - If not enough funds to place bet.
+   * @param {Number} bet - The bet to place.
+   */
   tryPlaceBet (bet) {
-    if (bet > this.#player.funds) {
+    if (bet > this.#funds) {
       throw new Error('Not enough funds.')
     }
     this.#currentBet = bet
-    this.#player.deductFunds(this.#currentBet)
-    this.#updatePlayerFundsView(this.#player.funds)
+    this.#deductFunds(this.#currentBet)
+    this.#updatePlayerFundsView(this.#funds)
   }
 
   /**
-   * Get the player hand.
+   * Checks if the games is over.
    *
-   * @returns {Hand} - The player hand.
+   * @returns {Boolean} - Whether the game is over.
    */
-  getHand () {
-    return this.#player.hand
+  isGameOver () {
+    return this.#funds <= 0
   }
 
   /**
@@ -69,31 +68,33 @@ export class PlayerController {
     if (result === Result.DEALER_WINNER) {
       this.#currentBet = 0
     } else if (result === Result.PLAYER_WINNER) {
-      this.#player.addFunds(this.#currentBet * this.#WIN_FACTOR)
-      this.#updatePlayerFundsView(this.#player.funds)
+      this.#addFunds(this.#currentBet * this.#WIN_FACTOR)
+      this.#updatePlayerFundsView(this.#funds)
     } else if (result === Result.BLACKJACK) {
-      this.#player.addFunds(this.#currentBet * this.#BLACK_JACK_WIN_FACTOR)
-      this.#updatePlayerFundsView(this.#player.funds)
+      this.#addFunds(this.#currentBet * this.#BLACK_JACK_WIN_FACTOR)
+      this.#updatePlayerFundsView(this.#funds)
     } else {
-      this.#player.addFunds(this.#currentBet)
-      this.#updatePlayerFundsView(this.#player.funds)
+      this.#addFunds(this.#currentBet)
+      this.#updatePlayerFundsView(this.#funds)
     }
   }
 
   /**
-   * Checks if the games is over.
-   *
-   * @returns {Boolean} - Whether the game is over.
+   * Empties view.
    */
-  isGameOver () {
-    return this.#player.funds <= 0
+  emptyView () {
+    this.#playerView.textContent = ''
   }
 
-  /**
-   * Empties hand, view and returns cards in hand.
-   */
-  emptyHandAndView () {
-    this.#playerView.textContent = ''
-    return this.#player.emptyHand()
+  #updatePlayerFundsView (funds) {
+    this.#fundsView.textContent = funds
+  }
+
+  #deductFunds (currentBet) {
+    this.#funds -= currentBet
+  }
+
+  #addFunds (currentBet) {
+    this.#funds += currentBet
   }
 }
