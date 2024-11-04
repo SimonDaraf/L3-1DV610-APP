@@ -85,7 +85,7 @@ export class BlackJack extends EventTarget {
     }
 
     let shouldStop = false
-    while (shouldStop) {
+    while (!shouldStop) {
       shouldStop = this.#takeDealerCycle()
     }
   }
