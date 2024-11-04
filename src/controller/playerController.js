@@ -1,4 +1,4 @@
-import { Result } from '../model/game/result.js'
+import { Result } from '../model/game/blackjack/result.js'
 
 /**
  * The player controller responsible for handling the player view.
