@@ -5,7 +5,7 @@ The reflection will cover additions to both L2 and L3.
 
 ## Chapter 2: Meaningful Names
 Following some of the guidelines here did not prove to be that much of a departure from how I usually name variables.
-Certain methods do have some questionable names. `dealerTurnCycle` is a method used by the GameController class, which handles one iteration of the dealers turn. Other than that most methods do use a verb to describe the core actioon that is to be performed. One deviation from what a "common" naming convention would look like is:
+Certain methods do have some questionable names. `dealerTurnCycle` is a method used by the GameController class, which handles one iteration of the dealers turn. Other than that most methods do use a verb to describe the core action that is to be performed. One deviation from what a "common" naming convention would look like is:
 ```js
 #onPlayer_Stand () {
   this.#togglePlayerChoiceView()
