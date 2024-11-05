@@ -1,5 +1,4 @@
 import { Hand } from './hand.js'
-import { Action } from './action.js'
 import { Deck } from '../deck.js'
 import { Result } from './result.js'
 import { Player } from './player.js'
@@ -60,18 +59,13 @@ export class BlackJack extends EventTarget {
   }
 
   /**
-   * Takes players action.
+   * Player hits.
    * If the player is busted the method will return false.
    *
-   * @param {Action} action - The action to perform.
    * @returns {Boolean} - If the player still can perform an action.
    */
-  takePlayerAction (action) {
-    if (action == Action.HIT) {
-      return this.#onHit(BlackJackEvent.PLAYER_CARD, this.#player)
-    } else {
-      return false
-    }
+  playerHit () {
+    return !this.#onHit(BlackJackEvent.PLAYER_CARD, this.#player)
   }
 
   /**

@@ -1,6 +1,4 @@
 import { BlackJack } from '../model/game/blackjack/blackjack.js'
-import { Action } from '../model/game/blackjack/action.js'
-import { Result } from '../model/game/blackjack/result.js'
 import { BlackJackEvent } from '../model/game/blackjack/blackjackEvents.js'
 import { ComponentEvent } from './events/componentEvents.js'
 import { RegisteredComponent } from './registeredComponents.js'
@@ -145,9 +143,9 @@ export class GameController extends EventTarget {
   }
 
   #onPlayer_Hit () {
-    if (this.#blackJackInstance.takePlayerAction(Action.HIT)) {
+    if (this.#blackJackInstance.playerHit()) {
       this.#togglePlayerChoiceView()
-      this.#startDealerTurn()
+      this.#evaluateGameResult()
     }
   }
 
