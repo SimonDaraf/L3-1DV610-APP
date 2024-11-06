@@ -48,21 +48,12 @@ export class Hand {
   getHandValue () {
     let value = 0
 
-    // Separate this from hand??
     for (const card of this.#cardsInHand) {
       value += card.rank.value
     }
 
     if (value > this.#MAX_ALLOWED_VALUE) {
-      for (let i = 0; i < this.#acesInHand(); i++) {
-        // No nicer way to do this, an ace is either 1 or 11, so remove 10.
-        value -= 10
-
-        // Check if we need to continue
-        if (value < this.#MAX_ALLOWED_VALUE) {
-          break
-        }
-      }
+      value -= this.#accountForAces(value)
     }
 
     return value
@@ -88,11 +79,6 @@ export class Hand {
     return cards
   }
 
-  /**
-   * Returns the amount of aces in hand.
-   *
-   * @returns {number} - The amount of aces in hand.
-   */
   #acesInHand () {
     let numberOfAces = 0
     for (const card of this.#cardsInHand) {
@@ -101,5 +87,21 @@ export class Hand {
       }
     }
     return numberOfAces
+  }
+
+  #accountForAces (value) {
+    const acesInHand = this.#acesInHand()
+    let deduction = 0
+    for (let i = 0; i < acesInHand; i++) {
+      // No nicer way to do this, an ace is either 1 or 11, so increment 10
+      deduction += 10
+
+      // Check if we need to continue
+      if (value < this.#MAX_ALLOWED_VALUE) {
+        break
+      }
+    }
+
+    return deduction
   }
 }
