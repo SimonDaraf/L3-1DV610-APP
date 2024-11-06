@@ -4,57 +4,171 @@ The reflection will cover additions to both L2 and L3.
 [L2 repo can be found here](https://github.com/SimonDaraf/simplified-web-components)
 
 ## Chapter 2: Meaningful Names
-Following some of the guidelines here did not prove to be that much of a departure from how I usually name variables.
-Certain methods do have some questionable names. `dealerTurnCycle` is a method used by the GameController class, which handles one iteration of the dealers turn. Other than that most methods do use a verb to describe the core action that is to be performed. One deviation from what a "common" naming convention would look like is:
+I decided to favor longer names, to effectively be able to more clearly communicate what either a variable name or method name entailed. Of course there are classic cases like:
+
 ```js
-#onPlayer_Stand () {
-  this.#togglePlayerChoiceView()
-  this.#takeDealerTurn()
-}
+/**
+ * @type {Hand}
+ */
+#hand
 ```
-A bunch of these names can be found relating to the event listener functions. This is mostly due to how I planned the event names relating to the specific dispatcher (And because of C#)
+
+Is hand a "meaningful name" does it reveal some "intention". Hard to say, not every member is some convoluted specialized class where the name will deviate from the type used.
+Simple constructs like `Hand`, `Deck`, `Card` make it hard to give it a name other than the type in my opinion, thus making the name not so meaningful.
+
+Methods mostly follow the rule of describing an action (verb). With a few outliers:
+
+```js
+htmlElementConstructor (componentName, html, css, events)
+```
+
+This is a method from L2 in `htmlElementConstructor.js`. Pherhaps a better name would have been `constructCustomHtmlElement` or `defineCustomHtmlElement`. But simply what it is is a constructor, so in my opinion the name fit.
+
 ## Chapter 3: Functions
-I did try my best following the guides stated throughout the book. Keeping function short, try do only do one thing etc. This worked quite well in the beginning when working
-on the model portion of the application. Were it fell apart was with the controllers and components. Looking at the constructor for `GameController` it is long and does a bunch of things, and that is after refactoring some of the logic into other classes. There are also cases where the level of indentation goes over one. I'm stating it because I know the book mentions it but when concidering one extra level of indentation versus a whole other function for one line of code, one extra level of indentation doesn't soom so "un-clean".
+
+Here we can once again look at `htmlElementConstructor`. Here is the full method:
 
 ```js
-constructor (gameComponent) {
-  super()
+/**
+ * A util function that defines a custom HTML element to the registry.
+ *
+ * @param {string} componentName - The name to register the element with.
+ * @param {HTMLTemplateElement} html - The HTML to append.
+ * @param {HTMLTemplateElement} css - The CSS to append.
+ * @param {EventContainer[]} events - Events to append.
+ */
+htmlElementConstructor (componentName, html, css, events) {
+  // Due to how HTML elements are created (not using new) this is a necessity.
+  // Especially if we want to make it somewhat modular.
+  customElements.define(componentName,
+    /**
+     * The custom element constructor.
+     */
+    class extends HTMLElement {
+      /**
+       * The abort controller object, used to properly remove any event listeners
+       * when the element leaves the DOM.
+       *
+       * @type {AbortController}
+       */
+      #abortController
 
-  this.#gameComponent = gameComponent
-  this.#abortController = new AbortController()
+      /**
+       * Constructs a new instance of the user-defined HTMLElement.
+       */
+      constructor () {
+        super()
 
-  this.#blackJackInstance = new BlackJack(new Deck())
+        // Attach a shadow DOM tree to this custom element and
+        // append the templates to the shadow root.
+        this.attachShadow({ mode: 'open' })
+        this.shadowRoot.appendChild(css.content.cloneNode(true))
+        this.shadowRoot.appendChild(html.content.cloneNode(true))
 
-  this.#cardFolderPath = new URL('../view/cards', import.meta.url).toString()
+        this.#abortController = new AbortController()
+      }
 
-  this.#choiceView = this.#gameComponent.shadowRoot.querySelector('#choice')
-  this.#betView = document.createElement(RegisteredComponent.BET_COMPONENT.componentName)
-  this.#playerChoiceView = document.createElement(RegisteredComponent.CHOICE_COMPONENT.componentName)
+      /**
+       * Called after the element is inserted into the DOM.
+       */
+      connectedCallback () {
+        for (const event of events) {
+          const targetElement = this.#getTargetElement(event.eventListenerElementID)
 
-  const playerView = this.#gameComponent.shadowRoot.querySelector('#player-hand')
-  const fundsView = this.#gameComponent.shadowRoot.querySelector('#fund-displayer')
-  this.#playerController = new PlayerController(playerView, fundsView)
+          targetElement.addEventListener(event.eventName, event.eventFunction, { signal: this.#abortController.signal })
+        }
+      }
 
-  const dealerView = this.#gameComponent.shadowRoot.querySelector('#dealer-hand')
-  this.#dealerController = new DealerController(dealerView)
+      /**
+       * Called after the element is removed from the DOM.
+       */
+      disconnectedCallback () {
+        this.#abortController.abort()
+      }
 
-  this.#choiceView.appendChild(this.#betView)
-  this.#choiceView.appendChild(this.#playerChoiceView)
-  this.#togglePlayerChoiceView()
-
-  this.#addEventListeners()
+      #getTargetElement (targetID) {
+        if (targetID === 'shadow-root') {
+          return this
+        } else {
+          return this.shadowRoot.querySelector(targetID)
+        }
+      }
+    }
+  )
 }
 ```
+
+Lets first look at indentation. This method has a total of four levels of indentation. Although this is a necessity, the only reason this looks unbearabe is due to the inline class definition. Remove this and suddenly we have a normal class with one extra level of indentation at most (*for* and *if*).
+
+Secondly we have the amount of arguments. This method has a total of four arguments. And no matter how we move things around, we need all four somehow. So we can either have four arguments or complicate the class lifecycle with a setup phase. Which in my opinion makes things more complicated rather than a couple of arguments.
+
+Another method is:
+
+```js
+#appendCardsToDeck () {
+  for (const suit of Object.values(CardSuit)) {
+    for (const rank of Object.values(CardRank)) {
+      this.#playingCards.push(new Card(suit, rank))
+    }
+  }
+}
+```
+
+There are one or two cases where we have more than one level of indentation. In this specific case, I don't really see another way to do this without just cluttering the class.
+The logic is in one way thightly coupled.
 
 ## Chapter 4: Comments
-A method I used to follow the principles declared where to set a rule, if the method has a clear and eaasy name and is private, there is no need to add a coomment. 
+A strategy I used here to avoid cluttering the codebase with comments is to first determine where comments could be needed when it comes to methods. One problem with JavaScript
+is that the language is not strictly typed. This means that there is a tradeoff, either we comment *every* method to ensure that the reader clearly knows any types of the arguments used, or we don't comment it, leaving the reader in the dark. Lets take this method from `playerController.js`
+
+```js
+#addFunds (currentBet) {
+  this.#funds += currentBet
+}
+```
+
+If we we're to add a comment, it would look like this:
+
+```js
+/**
+ * Adds funds to the player.
+ *
+ * @type {number} currentBet - The current bet.
+ **/
+#addFunds (currentBet) {
+  this.#funds += currentBet
+}
+```
+
+Taking the section of `Noise Comments` from Clean Code, this example is very similar to the examples given in the book. So what I decided to do here is to not comment private methods but only public methods. This means that any developer interacting with the class will know how to interact with said method(s). But the downside is new developers could be left in the dark when it comes to what type an argument is.
+
+Where I did decide to clutter the code base is private members of a class. Once again going back to JavaScripts lack of types. I decided to use *partial comments*, normally a variable comment in javascript would look like:
+
+```js
+/**
+ * The dealer.
+ *
+ * @type {Player}
+ **/
+#dealer
+```
+
+"The dealer" is obvious, the name says it. But one could guess that this was used by a `Dealer` class and not `Player`.
+I decided to instead do:
+
+```js
+/**
+ * @type {Player}
+ **/
+#dealer
+```
+
+In my opinion, the noise from the comment is removed. The type in JavaScripts case is not noise, it is relevant information.
+
 ## Chapter 5: Formatting
 ## Chapter 6: Objects and Data Structures
 ## Chapter 7: Error Handling
 ## Chapter 8: Boundaries
-The application is heavily dependant on the simplified web components package (L2). This is simply due to it being a package that handles UI, something that can't really be alleviated
-to elsewhere.
 ## Chapter 9: Unit Tests
 ## Chapter 10: Classes
 ## Chapter 11: Systems
