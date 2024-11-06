@@ -9,6 +9,9 @@ export class RegisteredComponent {
   static CHOICE_COMPONENT = new RegisteredComponent('choice-component')
   static CARD_COMPONENT = new RegisteredComponent('card-component')
 
+  /**
+   * @type {string}
+   */
   #componentName
 
   constructor (componentName) {
@@ -18,7 +21,7 @@ export class RegisteredComponent {
   /**
    * The registered component name, used to create the component in the DOM.
    *
-   * @type {String}
+   * @type {string}
    */
   get componentName () {
     return this.#componentName

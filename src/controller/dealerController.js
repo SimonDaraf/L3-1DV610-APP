@@ -2,10 +2,15 @@
  * The dealer controller responsible for handling the dealer view and AI logic.
  */
 export class DealerController {
+  /**
+   * @type {HTMLElement}
+   */
   #dealerView
 
   /**
    * Constructs an instance of the dealer controller.
+   *
+   * @param {HTMLElement} dealerView - The dealers view element.
    */
   constructor (dealerView) {
     this.#dealerView = dealerView

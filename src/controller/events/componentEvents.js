@@ -12,6 +12,9 @@ export class ComponentEvent {
   static DEALER_STAND = new ComponentEvent('dealer::stand')
   static GAME_OVER = new ComponentEvent('game::gameover')
 
+  /**
+   * @type {string}
+   */
   #event
 
   constructor (event) {
@@ -21,7 +24,7 @@ export class ComponentEvent {
   /**
    * The underlying event name.
    *
-   * @type {String}
+   * @type {string}
    */
   get event () {
     return this.#event

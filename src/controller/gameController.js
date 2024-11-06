@@ -9,14 +9,49 @@ import { DealerController } from './dealerController.js'
  * Controlls the game instance.
  */
 export class GameController extends EventTarget {
+  /**
+   * @type {HTMLElement}
+   */
   #gameComponent
-  #abortController
-  #blackJackInstance
-  #playerController
-  #dealerController
+
+  /**
+   * @type {HTMLElement}
+   */
   #choiceView
+
+  /**
+   * @type {HTMLElement}
+   */
   #betView
+
+  /**
+   * @type {HTMLElement}
+   */
   #playerChoiceView
+
+  /**
+   * @type {AbortController}
+   */
+  #abortController
+
+  /**
+   * @type {BlackJack}
+   */
+  #blackJackInstance
+
+  /**
+   * @type {PlayerController}
+   */
+  #playerController
+
+  /**
+   * @type {PlayerController}
+   */
+  #dealerController
+
+  /**
+   * @type {URL}
+   */
   #cardFolderPath
 
   /**

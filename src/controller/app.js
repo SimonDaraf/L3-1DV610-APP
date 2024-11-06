@@ -7,8 +7,19 @@ import { GameController } from './gameController.js'
  * App controls the actual application.
  */
 export class App {
+  /**
+   * @type {HTMLElement}
+   */
   #container
+
+  /**
+   * @type {AbortController}
+   */
   #abortController
+
+  /**
+   * @type {GameController}
+   */
   #gameController
 
   /**

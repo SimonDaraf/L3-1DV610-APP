@@ -4,6 +4,9 @@
 export class HtmlEvent {
   static CLICK = new HtmlEvent('click')
 
+  /**
+   * @type {string}
+   */
   #event
 
   constructor (event) {
@@ -13,7 +16,7 @@ export class HtmlEvent {
   /**
    * The underlying event name.
    *
-   * @type {String}
+   * @type {string}
    */
   get event () {
     return this.#event

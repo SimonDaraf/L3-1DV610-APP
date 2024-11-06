@@ -4,13 +4,35 @@ import { Result } from '../model/game/blackjack/result.js'
  * The player controller responsible for handling the player view.
  */
 export class PlayerController {
+  /**
+     * @type {number}
+     */
+  #WIN_FACTOR = 2
+
+  /**
+   * @type {number}
+   */
+  #BLACK_JACK_WIN_FACTOR = 2.5
+
+  /**
+   * @type {HTMLElement}
+   */
   #playerView
+
+  /**
+   * @type {HTMLElement}
+   */
   #fundsView
 
+  /**
+   * @type {number}
+   */
   #funds
+
+  /**
+   * @type {number}
+   */
   #currentBet
-  #WIN_FACTOR = 2
-  #BLACK_JACK_WIN_FACTOR = 2.5
 
   /**
    * Constructs an instance of the player controller.
@@ -53,7 +75,7 @@ export class PlayerController {
   /**
    * Checks if the games is over.
    *
-   * @returns {Boolean} - Whether the game is over.
+   * @returns {boolean} - Whether the game is over.
    */
   isGameOver () {
     return this.#funds <= 0
