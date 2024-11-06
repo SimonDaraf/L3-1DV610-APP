@@ -5,8 +5,8 @@ import { Result } from '../model/game/blackjack/result.js'
  */
 export class PlayerController {
   /**
-     * @type {number}
-     */
+   * @type {number}
+   */
   #WIN_FACTOR = 2
 
   /**
@@ -61,7 +61,7 @@ export class PlayerController {
    * Tries to place a bet.
    *
    * @throws {Error} - If not enough funds to place bet.
-   * @param {Number} bet - The bet to place.
+   * @param {number} bet - The bet to place.
    */
   tryPlaceBet (bet) {
     if (bet > this.#funds) {

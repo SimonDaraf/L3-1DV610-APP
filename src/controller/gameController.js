@@ -92,11 +92,11 @@ export class GameController extends EventTarget {
   }
 
   #addEventListeners () {
-    this.#addEvent(this.#betView, ComponentEvent.PLAYER_BET.event, this.#onPlayer_Bet)
-    this.#addEvent(this.#playerChoiceView, ComponentEvent.PLAYER_HIT.event, this.#onPlayer_Hit)
-    this.#addEvent(this.#playerChoiceView, ComponentEvent.PLAYER_STAND.event, this.#onPlayer_Stand)
-    this.#addEvent(this.#blackJackInstance, BlackJackEvent.PLAYER_CARD.event, this.#onBlackJack_PlayerCard)
-    this.#addEvent(this.#blackJackInstance, BlackJackEvent.DEALER_CARD.event, this.#onBlackJack_DealerCard)
+    this.#addEvent(this.#betView, ComponentEvent.PLAYER_BET.event, this.#onPlayerBet)
+    this.#addEvent(this.#playerChoiceView, ComponentEvent.PLAYER_HIT.event, this.#onPlayerHit)
+    this.#addEvent(this.#playerChoiceView, ComponentEvent.PLAYER_STAND.event, this.#onPlayerStand)
+    this.#addEvent(this.#blackJackInstance, BlackJackEvent.PLAYER_CARD.event, this.#onBlackJackPlayerCard)
+    this.#addEvent(this.#blackJackInstance, BlackJackEvent.DEALER_CARD.event, this.#onBlackJackDealerCard)
   }
 
   #addEvent (target, eventName, method) {
@@ -164,7 +164,7 @@ export class GameController extends EventTarget {
     }))
   }
 
-  #onPlayer_Bet (eventObj) {
+  #onPlayerBet (eventObj) {
     const bet = eventObj.detail
     try {
       this.#playerController.tryPlaceBet(bet)
@@ -177,24 +177,24 @@ export class GameController extends EventTarget {
     this.#startGame()
   }
 
-  #onPlayer_Hit () {
+  #onPlayerHit () {
     if (this.#blackJackInstance.playerHit()) {
       this.#togglePlayerChoiceView()
       this.#evaluateGameResult()
     }
   }
 
-  #onPlayer_Stand () {
+  #onPlayerStand () {
     this.#togglePlayerChoiceView()
     this.#startDealerTurn()
   }
 
-  #onBlackJack_PlayerCard (eventObj) {
+  #onBlackJackPlayerCard (eventObj) {
     const card = eventObj.detail
     this.#playerController.addCard(this.#createCardElement(card))
   }
 
-  #onBlackJack_DealerCard (eventObj) {
+  #onBlackJackDealerCard (eventObj) {
     const card = eventObj.detail
     this.#dealerController.addCard(this.#createCardElement(card))
   }
