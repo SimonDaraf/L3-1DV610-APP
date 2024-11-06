@@ -16,7 +16,6 @@ test('Assert correct hand value', () => {
   const handThree = new Hand()
   const handFour = new Hand()
 
-  // Close your eyes, JavaScript can't hurt you :)
   const cardsHandOne = [new Card(CardSuit.HEARTS, CardRank.KING)]
   const cardsHandTwo = [new Card(CardSuit.HEARTS, CardRank.EIGHT),
     new Card(CardSuit.HEARTS, CardRank.FOUR),
@@ -28,7 +27,6 @@ test('Assert correct hand value', () => {
     new Card(CardSuit.HEARTS, CardRank.ACE),
     new Card(CardSuit.HEARTS, CardRank.ACE)]
 
-  // Act
   for (const card of cardsHandOne) {
     handOne.addCardToHand(card)
   }
@@ -42,7 +40,6 @@ test('Assert correct hand value', () => {
     handFour.addCardToHand(card)
   }
 
-  // Assert
   expect(handOne.getHandValue()).toStrictEqual(expectedOne)
   expect(handTwo.getHandValue()).toStrictEqual(expectedTwo)
   expect(handThree.getHandValue()).toStrictEqual(expectedThree)
