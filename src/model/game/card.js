@@ -5,8 +5,19 @@ import { CardRank } from './cardRanks.js'
  * Represents a basic playing card.
  */
 export class Card {
+  /**
+   * @type {CardSuit}
+   */
   #suit
+
+  /**
+   * @type {CardRank}
+   */
   #rank
+
+  /**
+   * @type {string}
+   */
   #fileName
 
   /**
@@ -56,7 +67,7 @@ export class Card {
   /**
    * Returns a usable file name assembled from the card.
    *
-   * @type {String}
+   * @type {string}
    */
   get fileName () {
     return this.#fileName

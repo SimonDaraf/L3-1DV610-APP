@@ -7,8 +7,6 @@ import { CardRank } from './cardRanks.js'
  */
 export class Deck {
   /**
-   * An array of playing cards.
-   *
    * @type {Card[]}
    */
   #playingCards

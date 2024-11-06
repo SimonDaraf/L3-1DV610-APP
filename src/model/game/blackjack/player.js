@@ -5,6 +5,9 @@ import { Hand } from './hand.js'
  * Represents a blackjack player.
  */
 export class Player {
+  /**
+   * @type {Hand}
+   */
   #hand
 
   /**

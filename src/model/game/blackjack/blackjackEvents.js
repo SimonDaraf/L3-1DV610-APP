@@ -5,6 +5,9 @@ export class BlackJackEvent {
   static PLAYER_CARD = new BlackJackEvent('blackjack::onplayercard')
   static DEALER_CARD = new BlackJackEvent('blackjack::ondealercard')
 
+  /**
+   * @type {string}
+   */
   #event
 
   constructor (value) {

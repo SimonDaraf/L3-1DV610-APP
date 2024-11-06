@@ -12,9 +12,24 @@ import { BlackJackEvent } from './blackjackEvents.js'
  * @event blackjack::ondealercard - Dispatched when the dealer recieves a card.
  */
 export class BlackJack extends EventTarget {
+  /**
+   * @type {Player}
+   */
   #player
+
+  /**
+   * @type {Player}
+   */
   #dealer
+
+  /**
+   * @type {Deck}
+   */
   #deck
+
+  /**
+   * @type {BlackJackRules}
+   */
   #rules
 
   /**
@@ -62,7 +77,7 @@ export class BlackJack extends EventTarget {
    * Player hits.
    * If the player is busted the method will return false.
    *
-   * @returns {Boolean} - If the player still can perform an action.
+   * @returns {boolean} - If the player still can perform an action.
    */
   playerHit () {
     return !this.#onHit(BlackJackEvent.PLAYER_CARD, this.#player)

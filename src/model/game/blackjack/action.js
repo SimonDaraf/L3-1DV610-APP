@@ -5,6 +5,9 @@ export class Action {
   static HIT = new Action('hit')
   static STAND = new Action('stand')
 
+  /**
+   * @type {string}
+   */
   #value
 
   constructor (value) {

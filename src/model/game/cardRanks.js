@@ -16,7 +16,14 @@ export class CardRank {
   static KING = new CardRank(10, 'king')
   static ACE = new CardRank(11, 'ace')
 
+  /**
+   * @type {number}
+   */
   #value
+
+  /**
+   * @type {string}
+   */
   #name
 
   constructor (value, name) {
@@ -36,7 +43,7 @@ export class CardRank {
   /**
    * The readable name for the rank.
    *
-   * @type {String}
+   * @type {string}
    */
   get name () {
     return this.#name

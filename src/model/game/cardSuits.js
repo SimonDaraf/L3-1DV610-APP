@@ -7,6 +7,9 @@ export class CardSuit {
   static CLUBS = new CardSuit('clubs')
   static SPADES = new CardSuit('spades')
 
+  /**
+   * @type {string}
+   */
   #value
 
   constructor (value) {

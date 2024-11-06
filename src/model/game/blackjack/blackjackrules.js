@@ -5,8 +5,19 @@ import { Result } from './result.js'
  * Contains rules for the blackjack game.
  */
 export class BlackJackRules {
+  /**
+   * @type {number}
+   */
   #STARTING_HAND_SIZE = 2
+
+  /**
+   * @type {number}
+   */
   #BLACKJACK = 21
+
+  /**
+   * @type {number}
+   */
   #DEALER_HIT_LIMIT = 17
 
   /**
@@ -42,7 +53,7 @@ export class BlackJackRules {
    * Checks if the specified hand is busted.
    *
    * @param {Hand} hand - The hand to check.
-   * @returns {Boolean} - If the hand is busted.
+   * @returns {boolean} - If the hand is busted.
    */
   isHandBusted (hand) {
     return hand.getHandValue() > 21
@@ -52,7 +63,7 @@ export class BlackJackRules {
    * Checks if the hand is a natural winner.
    *
    * @param {Hand} hand - The hand to check.
-   * @returns {Boolean} - If the hand is a natural winner.
+   * @returns {boolean} - If the hand is a natural winner.
    */
   isHandNaturalWinner (hand) {
     if (hand.getCurrentHandSize() === this.#STARTING_HAND_SIZE && hand.getHandValue() === this.#BLACKJACK) {
@@ -65,7 +76,7 @@ export class BlackJackRules {
    * Check if dealer can hit.
    *
    * @param {Hand} hand - The hand to check.
-   * @returns {Boolean} - If the dealer can hit.
+   * @returns {boolean} - If the dealer can hit.
    */
   canDealerHit (hand) {
     return hand.getHandValue() < this.#DEALER_HIT_LIMIT

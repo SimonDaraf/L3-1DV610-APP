@@ -6,17 +6,18 @@ import { CardRank } from '../cardRanks.js'
  */
 export class Hand {
   /**
-   * Current cards in hand.
-   *
    * @type {Card[]}
    */
   #cardsInHand
 
   /**
-   * The max allowed value of a hand.
+   * @type {number}
    */
   #MAX_ALLOWED_VALUE = 21
 
+  /**
+   * Constructs a blackjack hand.
+   */
   constructor () {
     this.#cardsInHand = []
   }
@@ -42,7 +43,7 @@ export class Hand {
   /**
    * Returns the current hand value as a whole number.
    *
-   * @returns {Number} - The hands current value.
+   * @returns {number} - The hands current value.
    */
   getHandValue () {
     let value = 0
@@ -70,7 +71,7 @@ export class Hand {
   /**
    * The current size of the hand.
    *
-   * @returns {Number} - The current hand size.
+   * @returns {number} - The current hand size.
    */
   getCurrentHandSize () {
     return this.#cardsInHand.length
@@ -90,7 +91,7 @@ export class Hand {
   /**
    * Returns the amount of aces in hand.
    *
-   * @returns {Number} - The amount of aces in hand.
+   * @returns {number} - The amount of aces in hand.
    */
   #acesInHand () {
     let numberOfAces = 0

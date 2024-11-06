@@ -7,6 +7,9 @@ export class Result {
   static DRAW = new Result('Draw!')
   static BLACKJACK = new Result('BlackJack!')
 
+  /**
+   * @type {string}
+   */
   #value
 
   constructor (value) {
