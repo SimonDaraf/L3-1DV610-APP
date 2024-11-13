@@ -98,7 +98,7 @@ htmlElementConstructor (componentName, html, css, events) {
 }
 ```
 
-Lets first look at indentation. This method has a total of four levels of indentation. Although this is a necessity, the only reason this looks unbearabe is due to the inline class definition. Remove this and suddenly we have a normal class with one extra level of indentation at most (*for* and *if*).
+Lets first look at indentation. This method has a total of four levels of indentation. This is a result of the inline class definition, which sadly is a necessity due to how custom html elements are defined. Remove this and suddenly we have a normal class with one extra level of indentation at most (*for* and *if*).
 
 Secondly we have the amount of arguments. This method has a total of four arguments. And no matter how we move things around, we need all four somehow. So we can either have four arguments or complicate the class lifecycle with a setup phase. Which in my opinion makes things more complicated rather than a couple of arguments.
 
@@ -167,7 +167,103 @@ In my opinion, the noise from the comment is removed. The type in JavaScripts ca
 
 ## Chapter 5: Formatting
 ## Chapter 6: Objects and Data Structures
+
+The application features a few classes that *could* be concidered data structures more than actual functional classes. Looking at the `Card` class in `card.js` we have no real functionality in the form of methods but only getters and setters. The *could* comes from the fact that the setters are private, so manipulation of the data is not possible, this is ofcourse intended as we don't want to directly modify either the suit or rank of a card.
+
+Other than that I would also like to discuss another form of data structure pherhaps more relevant for this appllication rather than what's directly discussed in the chapter. There are a lot of classes that look like this:
+
+```js
+/**
+ * An enum like class containing card suits.
+ */
+export class CardSuit {
+  static HEARTS = new CardSuit('hearts')
+  static DIAMONDS = new CardSuit('diamonds')
+  static CLUBS = new CardSuit('clubs')
+  static SPADES = new CardSuit('spades')
+
+  /**
+   * @type {string}
+   */
+  #value
+
+  constructor (value) {
+    this.#value = value
+  }
+
+  /**
+   * The card suit value.
+   *
+   * @type {string}
+   */
+  get value () {
+    return this.#value
+  }
+}
+```
+
+I thought it might be smart to mention these classes. JavaScript does not have any enums or other forms of literals. There are other ways to achieve this functionality. One is using the `Object.freeze()` method, like this:
+
+```js
+export const suits = Object.freeze({
+  HEARTS: 'hearts',
+  -- etc --
+})
+```
+
+This also lets us achieve a similar usage, but does not give us any way to document the usage of any literals. Using the class example with static members we achieve a strict
+type enum usage, we also alleviate certain string dependencies that would otherwise arise.
+
 ## Chapter 7: Error Handling
+
+Due to JavaScript not having a form of assert that is strictly used to let programmers know that a problem has ocurred that needs to be fixed. We instead throw a normal error and don't catch it. One of these examples are:
+
+```js
+#setSuit (suit) {
+  if (!(suit instanceof CardSuit)) {
+    throw new Error('Invalid card suit.')
+  }
+  this.#suit = suit
+}
+```
+
+This error is not meant to be catched, suits are a collection of static literals, if this assembly fails it must be evaluated directly. So this is an example of the assert strategy.
+
+One example where we actually use error handling as functionality is:
+
+`playerController.js`
+```js
+/**
+ * Tries to place a bet.
+ *
+ * @throws {Error} - If not enough funds to place bet.
+ * @param {number} bet - The bet to place.
+ */
+tryPlaceBet (bet) {
+  if (bet > this.#funds) {
+    throw new Error('Not enough funds.')
+  }
+  this.#currentBet = bet
+  this.#deductFunds(this.#currentBet)
+  this.#updatePlayerFundsView(this.#funds)
+}
+```
+
+Here the user has selected a bet value, instead of returning a boolean to indicate whether this was successful we throw an error, which is the catched:
+
+`gameController.js`
+```js
+try {
+  this.#playerController.tryPlaceBet(bet)
+} catch (error) {
+  window.alert('Not enough funds!')
+  return
+}
+```
+
+This way this runtime error becomes more of a clear indication that the process can't continue, it also communicates the fact that we abort the current operation a bit better than a
+`return false` in the middle of the method.
+
 ## Chapter 8: Boundaries
 ## Chapter 9: Unit Tests
 ## Chapter 10: Classes
