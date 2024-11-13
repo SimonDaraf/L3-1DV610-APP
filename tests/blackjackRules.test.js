@@ -7,7 +7,7 @@ import { CardRank } from '../src/model/game/cardRanks'
 import { CardSuit } from '../src/model/game/cardSuits'
 import { Result } from '../src/model/game/blackjack/result.js'
 
-test('Assert result is draw || Both blackjack', () => {
+test('Assert result is draw | Both blackjack', () => {
   const dealer = new Player(new Hand())
   const player = new Player(new Hand())
   const rules = new BlackJackRules()
@@ -21,7 +21,7 @@ test('Assert result is draw || Both blackjack', () => {
   expect(expected).toStrictEqual(rules.evaluateWinner(player.hand, dealer.hand).value)
 })
 
-test('Assert result is draw || Both equal', () => {
+test('Assert result is draw | Both equal', () => {
   const dealer = new Player(new Hand())
   const player = new Player(new Hand())
   const rules = new BlackJackRules()
@@ -35,7 +35,7 @@ test('Assert result is draw || Both equal', () => {
   expect(expected).toStrictEqual(rules.evaluateWinner(player.hand, dealer.hand).value)
 })
 
-test('Assert result is blackjack || Player blackjack', () => {
+test('Assert result is blackjack | Player blackjack', () => {
   const dealer = new Player(new Hand())
   const player = new Player(new Hand())
   const rules = new BlackJackRules()
@@ -49,7 +49,7 @@ test('Assert result is blackjack || Player blackjack', () => {
   expect(expected).toStrictEqual(rules.evaluateWinner(player.hand, dealer.hand).value)
 })
 
-test('Assert result is dealer win || Player bust', () => {
+test('Assert result is dealer win | Player bust', () => {
   const dealer = new Player(new Hand())
   const player = new Player(new Hand())
   const rules = new BlackJackRules()
@@ -64,7 +64,7 @@ test('Assert result is dealer win || Player bust', () => {
   expect(expected).toStrictEqual(rules.evaluateWinner(player.hand, dealer.hand).value)
 })
 
-test('Assert result is player win || Dealer bust', () => {
+test('Assert result is player win | Dealer bust', () => {
   const dealer = new Player(new Hand())
   const player = new Player(new Hand())
   const rules = new BlackJackRules()
@@ -79,7 +79,7 @@ test('Assert result is player win || Dealer bust', () => {
   expect(expected).toStrictEqual(rules.evaluateWinner(player.hand, dealer.hand).value)
 })
 
-test('Assert result is player win || Dealer lower', () => {
+test('Assert result is player win | Dealer lower', () => {
   const dealer = new Player(new Hand())
   const player = new Player(new Hand())
   const rules = new BlackJackRules()
@@ -93,7 +93,7 @@ test('Assert result is player win || Dealer lower', () => {
   expect(expected).toStrictEqual(rules.evaluateWinner(player.hand, dealer.hand).value)
 })
 
-test('Assert result is dealer win || Player lower', () => {
+test('Assert result is dealer win | Player lower', () => {
   const dealer = new Player(new Hand())
   const player = new Player(new Hand())
   const rules = new BlackJackRules()

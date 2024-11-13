@@ -5,7 +5,6 @@ import { CardRank } from '../src/model/game/cardRanks.js'
 import { Card } from '../src/model/game/card.js'
 
 test('Assert correct hand value', () => {
-  // Arrange
   const expectedOne = 10
   const expectedTwo = 22
   const expectedThree = 18

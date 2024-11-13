@@ -166,6 +166,9 @@ I decided to instead do:
 In my opinion, the noise from the comment is removed. The type in JavaScripts case is not noise, it is relevant information.
 
 ## Chapter 5: Formatting
+
+format
+
 ## Chapter 6: Objects and Data Structures
 
 The application features a few classes that *could* be concidered data structures more than actual functional classes. Looking at the `Card` class in `card.js` we have no real functionality in the form of methods but only getters and setters. The *could* comes from the fact that the setters are private, so manipulation of the data is not possible, this is ofcourse intended as we don't want to directly modify either the suit or rank of a card.
@@ -249,7 +252,7 @@ tryPlaceBet (bet) {
 }
 ```
 
-Here the user has selected a bet value, instead of returning a boolean to indicate whether this was successful we throw an error, which is the catched:
+Here the user has selected a bet value, instead of returning a boolean to indicate whether this was successful we throw an error, which is then catched:
 
 `gameController.js`
 ```js
