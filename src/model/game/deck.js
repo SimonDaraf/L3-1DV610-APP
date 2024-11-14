@@ -19,14 +19,6 @@ export class Deck {
     this.#appendCardsToDeck()
   }
 
-  #appendCardsToDeck () {
-    for (const suit of Object.values(CardSuit)) {
-      for (const rank of Object.values(CardRank)) {
-        this.#playingCards.push(new Card(suit, rank))
-      }
-    }
-  }
-
   /**
    * Shuffles the deck with the fisher-yates algorithm.
    */
@@ -59,5 +51,13 @@ export class Deck {
    */
   popTopCard () {
     return this.#playingCards.pop()
+  }
+
+  #appendCardsToDeck () {
+    for (const suit of Object.values(CardSuit)) {
+      for (const rank of Object.values(CardRank)) {
+        this.#playingCards.push(new Card(suit, rank))
+      }
+    }
   }
 }

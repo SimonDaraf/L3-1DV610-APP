@@ -32,20 +32,6 @@ export class Card {
     this.#fileName = `${rank.name}_of_${suit.value}.png`
   }
 
-  #setSuit (suit) {
-    if (!(suit instanceof CardSuit)) {
-      throw new Error('Invalid card suit.')
-    }
-    this.#suit = suit
-  }
-
-  #setRank (rank) {
-    if (!(rank instanceof CardRank)) {
-      throw new Error('Invalid card rank.')
-    }
-    this.#rank = rank
-  }
-
   /**
    * The card suit.
    *
@@ -71,5 +57,19 @@ export class Card {
    */
   get fileName () {
     return this.#fileName
+  }
+
+  #setSuit (suit) {
+    if (!(suit instanceof CardSuit)) {
+      throw new Error('Invalid card suit.')
+    }
+    this.#suit = suit
+  }
+
+  #setRank (rank) {
+    if (!(rank instanceof CardRank)) {
+      throw new Error('Invalid card rank.')
+    }
+    this.#rank = rank
   }
 }
