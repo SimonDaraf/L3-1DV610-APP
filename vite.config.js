@@ -30,15 +30,15 @@ export default defineConfig ({
       targets: [
         {
           src: 'src/**/*.html',
-          dest: 'assets'
+          dest: ''
         },
         {
           src: 'src/**/*.css',
-          dest: 'assets',
+          dest: '',
         },
         {
           src: 'src/**/*.png',
-          dest: 'assets',
+          dest: 'view/cards',
         },
       ]
     })
