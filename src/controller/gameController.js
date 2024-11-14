@@ -178,7 +178,7 @@ export class GameController extends EventTarget {
   }
 
   #onPlayerHit () {
-    if (this.#blackJackInstance.playerHit()) {
+    if (!this.#blackJackInstance.playerHit()) {
       this.#togglePlayerChoiceView()
       this.#evaluateGameResult()
     }
