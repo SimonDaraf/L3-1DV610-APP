@@ -10,6 +10,23 @@ Date and performer must be documented.
 |-----------|-----------|-------------|-------------|--------|------|
 |           |           |             |             |        |      |
 
+## Test v1.1.0 - Simon Danielsson - 15/11/2024
+
+This test will focus on tests marked with either 🔸 or ❌.
+
+### Case 01: Player has blackjack
+
+| Iteration | Condition | Player Hand | Dealer Hand | Status | Note |
+|-----------|-----------|-------------|-------------|--------|------|
+|1| Player has blackjack | A, Q | 5, 9, J | ❌ | Because we let the dealer take cards, if the dealer is busted the check for busted goes before blackjack, so player is just awarded winning points and not blackjack points. |
+|2| Player has blackjack | 10, A | A, 10 | ✅ | This is a rare case where both player and dealer has blackjack, but in our version this should be handled with a draw. Works. |
+
+### Case 09: Funds
+
+| Iteration | Condition | Bet placed | Amount back | Status | Note |
+|-----------|-----------|-------------|-------------|--------|------|
+|1| Draw, player gest their bet back | 10 | 10 | ✅ | Now works correctly, problem was the bet not being parsed to a number. Other results we're part of a multiplication formula which handled this under the hood. |
+
 ## Test v1.0.0 - Simon Danielsson - 15/11/2024
 
 ### Case 01: Player has blackjack
