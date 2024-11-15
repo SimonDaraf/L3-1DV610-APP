@@ -10,6 +10,21 @@ Date and performer must be documented.
 |-----------|-----------|-------------|-------------|--------|------|
 |           |           |             |             |        |      |
 
+## Test v1.2.0 - Simon Danielsson - 15/11/2024
+
+This test will focus on tests marked with either 🔸 or ❌.
+
+### Case 01: Player has blackjack
+| Iteration | Condition | Player Hand | Dealer Hand | Status | Note |
+|-----------|-----------|-------------|-------------|--------|------|
+|1| Player has blackjack | A, K | 4, 7, J | ✅ | Now correctly states blackjack even if dealer hand gets busted. |
+
+### Case 09: Funds
+
+| Iteration | Condition | Bet placed | Amount back | Status | Note |
+|-----------|-----------|-------------|-------------|--------|------|
+|1| Blackjack, player gets 2.5x rounded up | 1 | 3 | ✅ | Now when betting 1 the blackjack result is 3 instead of 2.5 which would cause a softlock if the player got down to 0.5 funds |
+
 ## Test v1.1.0 - Simon Danielsson - 15/11/2024
 
 This test will focus on tests marked with either 🔸 or ❌.
@@ -102,7 +117,6 @@ This test will focus on tests marked with either 🔸 or ❌.
 
 | Iteration | Condition | Bet placed | Amount back | Status | Note |
 |-----------|-----------|-------------|-------------|--------|------|
-|1| Blackjack, player gets 2.5x | |  | ✅ | -=- |
 |2| Player wins, player gets 2x | 10 | 20 | ✅ | -=- |
 |3| Dealer wins, player loses bet | 10 | 0 | ✅ | -=- |
 |4| Draw, player gest their bet back | 10 | 3970 | ❌ | Funds after bet was 40, bet placed 10, final sum 4010. I think I see the potential issue. |
