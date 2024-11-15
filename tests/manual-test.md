@@ -10,7 +10,7 @@ Date and performer must be documented.
 |-----------|-----------|-------------|-------------|--------|------|
 |           |           |             |             |        |      |
 
-## Test - Simon Danielsson - 15/11/2024
+## Test v1.0.0 - Simon Danielsson - 15/11/2024
 
 ### Case 01: Player has blackjack
 

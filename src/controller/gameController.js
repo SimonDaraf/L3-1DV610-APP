@@ -169,7 +169,7 @@ export class GameController extends EventTarget {
     try {
       this.#playerController.tryPlaceBet(bet)
     } catch (error) {
-      window.alert('Not enough funds!')
+      window.alert(error.message)
       return
     }
 
