@@ -32,7 +32,7 @@ export class BlackJackRules {
     if (this.isHandBusted(playerHand)) {
       return Result.DEALER_WINNER
     }
-    if (this.isHandBusted(dealerHand)) {
+    if (this.isHandBusted(dealerHand) && !this.isHandNaturalWinner(playerHand)) {
       return Result.PLAYER_WINNER
     }
 

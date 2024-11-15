@@ -1,6 +1,6 @@
 {
   "name": "l3-1dv610-app",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The L3 laboration for 1DV610",
   "main": "./src/index.js",
   "type": "module",
